@@ -23,10 +23,10 @@ Jetpack's Widget Visibility only supports "Include children" which covers direct
 
 **Example:**
 ```
-/patient/                                    ← Parent
-/patient/erectile-dysfunction/               ← Child (Jetpack ✓)
-/patient/erectile-dysfunction/treatment/     ← Grandchild (Jetpack ✗)
-/patient/erectile-dysfunction/treatment/faq/ ← Great-grandchild (Jetpack ✗)
+/services/                          ← Parent
+/services/web-design/               ← Child (Jetpack ✓)
+/services/web-design/pricing/       ← Grandchild (Jetpack ✗)
+/services/web-design/pricing/faq/   ← Great-grandchild (Jetpack ✗)
 ```
 
 ## ✅ The Solution
