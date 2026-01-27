@@ -145,13 +145,20 @@ This plugin works with classic widgets. For block-based widget areas, the visibi
 
 ## Changelog
 
+### 1.1.0 (2025-01-27)
+- Added 30 language translations
+- Turkish, Spanish, German, French, Italian, Portuguese, Dutch, Polish, Russian, Japanese, Chinese, Korean, Arabic, Hebrew, Swedish, Norwegian, Danish, Finnish, Greek, Czech, Hungarian, Romanian, Ukrainian, Vietnamese, Thai, Indonesian, Hindi, Slovak
+
+### 1.0.1 (2025-01-27)
+- Fixed descendant detection bug (ancestor ID type conversion issue)
+- Improved reliability for deeply nested page hierarchies
+
 ### 1.0.0 (2025-01-27)
 - Initial release
 - Page visibility with full descendant support
 - Category visibility with hierarchy support
 - Post type, special pages, and user state conditions
 - Multiple conditions with AND/OR logic
-- Translation ready
 
 ## Contributing
 
