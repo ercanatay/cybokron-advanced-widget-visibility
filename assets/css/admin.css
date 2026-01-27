@@ -1,0 +1,229 @@
+/**
+ * Widget Visibility with Descendants - Admin Styles
+ */
+
+/* Visibility Toggle Button */
+.wvd-visibility-wrapper {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.wvd-visibility-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.wvd-visibility-button {
+    background: #0073aa;
+    border-color: #0073aa;
+    color: #fff;
+}
+
+.wvd-visibility-button:hover,
+.wvd-visibility-button:focus {
+    background: #005a87;
+    border-color: #005a87;
+    color: #fff;
+}
+
+.wvd-visibility-status {
+    font-size: 12px;
+    color: #666;
+}
+
+.wvd-visibility-status.wvd-has-rules {
+    color: #0073aa;
+    font-weight: 600;
+}
+
+/* Visibility Panel */
+.wvd-visibility-panel {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 10px;
+    padding: 15px;
+}
+
+/* Action Row (Show/Hide) */
+.wvd-action-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+.wvd-action-row select {
+    min-width: 80px;
+}
+
+/* Rules Container */
+.wvd-rules {
+    margin-bottom: 15px;
+}
+
+/* Single Rule */
+.wvd-rule {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin-bottom: 8px;
+}
+
+.wvd-rule:last-child {
+    margin-bottom: 0;
+}
+
+/* Remove Button */
+.wvd-rule-remove {
+    color: #a00;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 5px;
+    text-decoration: none;
+}
+
+.wvd-rule-remove:hover {
+    color: #dc3232;
+}
+
+/* Rule Selects */
+.wvd-rule select {
+    min-width: 120px;
+}
+
+.wvd-rule-type {
+    min-width: 140px !important;
+}
+
+.wvd-rule-value {
+    min-width: 180px !important;
+    max-width: 250px;
+}
+
+/* Rule Label */
+.wvd-rule-label {
+    color: #666;
+    font-size: 13px;
+    padding: 5px 0;
+}
+
+/* Checkboxes Container */
+.wvd-rule-options {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    margin-top: 5px;
+    padding-left: 25px;
+}
+
+.wvd-rule-options label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: #555;
+    cursor: pointer;
+}
+
+.wvd-rule-options input[type="checkbox"] {
+    margin: 0;
+}
+
+/* Descendants checkbox highlight */
+.wvd-rule-options .wvd-descendants-option {
+    color: #0073aa;
+    font-weight: 500;
+}
+
+/* Add Condition Button */
+.wvd-add-rule {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #0073aa;
+    text-decoration: none;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.wvd-add-rule:hover {
+    color: #005a87;
+    text-decoration: underline;
+}
+
+.wvd-add-rule::before {
+    content: "+";
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Match All Checkbox */
+.wvd-match-all {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.wvd-match-all label {
+    font-size: 12px;
+    color: #555;
+    cursor: pointer;
+}
+
+/* Footer Actions */
+.wvd-panel-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.wvd-delete-rules {
+    color: #a00;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.wvd-delete-rules:hover {
+    color: #dc3232;
+    text-decoration: underline;
+}
+
+.wvd-done-button {
+    background: #0073aa;
+    border-color: #0073aa;
+    color: #fff;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+    .wvd-rule {
+        flex-direction: column;
+    }
+
+    .wvd-rule select {
+        width: 100%;
+        max-width: none;
+    }
+
+    .wvd-rule-options {
+        padding-left: 0;
+    }
+}
