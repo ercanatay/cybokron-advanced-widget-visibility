@@ -195,7 +195,7 @@ class WVD_Visibility_Admin {
         if (isset($new_instance['wvd_visibility'])) {
             $data = $new_instance['wvd_visibility'];
             if (is_string($data)) {
-                $data = json_decode(stripslashes($data), true);
+                $data = json_decode(wp_unslash($data), true);
             }
             $instance['wvd_visibility'] = $this->sanitize_visibility_data($data);
         }
@@ -252,8 +252,19 @@ class WVD_Visibility_Admin {
                     continue;
                 }
 
-                // Sanitize and limit value length
-                $value = sanitize_text_field($rule['value']);
+                // Sanitize value based on type
+                if ($type === 'page' || $type === 'category' || $type === 'author') {
+                    // IDs must be numeric
+                    $value = intval($rule['value']);
+                } elseif ($type === 'post_type') {
+                    // Post types must be valid keys (alphanumeric, dashes, underscores)
+                    $value = sanitize_key($rule['value']);
+                } else {
+                    // Default sanitization for others
+                    $value = sanitize_text_field($rule['value']);
+                }
+
+                // Limit value length
                 if (strlen($value) > $max_value_length) {
                     $value = substr($value, 0, $max_value_length);
                 }
