@@ -67,10 +67,10 @@
         // Action row (Show/Hide)
         html += '<div class="wvd-action-row">';
         html += '<select class="wvd-action-select">';
-        html += '<option value="show"' + (data.action === 'show' ? ' selected' : '') + '>' + wvdData.i18n.show + '</option>';
-        html += '<option value="hide"' + (data.action === 'hide' ? ' selected' : '') + '>' + wvdData.i18n.hide + '</option>';
+        html += '<option value="show"' + (data.action === 'show' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.show) + '</option>';
+        html += '<option value="hide"' + (data.action === 'hide' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.hide) + '</option>';
         html += '</select>';
-        html += '<span class="wvd-rule-label">' + wvdData.i18n.if + ':</span>';
+        html += '<span class="wvd-rule-label">' + escapeHtml(wvdData.i18n.if) + ':</span>';
         html += '</div>';
 
         // Rules container
@@ -83,20 +83,20 @@
         html += '</div>';
 
         // Add condition link
-        html += '<a href="#" class="wvd-add-rule">' + wvdData.i18n.addCondition + '</a>';
+        html += '<a href="#" class="wvd-add-rule">' + escapeHtml(wvdData.i18n.addCondition) + '</a>';
 
         // Match all checkbox
         html += '<div class="wvd-match-all">';
         html += '<label>';
         html += '<input type="checkbox" class="wvd-match-all-checkbox"' + (data.match_all ? ' checked' : '') + '>';
-        html += ' ' + wvdData.i18n.matchAll;
+        html += ' ' + escapeHtml(wvdData.i18n.matchAll);
         html += '</label>';
         html += '</div>';
 
         // Footer
         html += '<div class="wvd-panel-footer">';
-        html += '<a href="#" class="wvd-delete-rules">' + wvdData.i18n.delete + '</a>';
-        html += '<button type="button" class="button wvd-done-button">' + wvdData.i18n.done + '</button>';
+        html += '<a href="#" class="wvd-delete-rules">' + escapeHtml(wvdData.i18n.delete) + '</a>';
+        html += '<button type="button" class="button wvd-done-button">' + escapeHtml(wvdData.i18n.done) + '</button>';
         html += '</div>';
 
         $content.html(html);
@@ -112,13 +112,13 @@
         var html = '<div class="wvd-rule" data-index="' + index + '">';
 
         // Remove button
-        html += '<a href="#" class="wvd-rule-remove" title="' + wvdData.i18n.remove + '">&times;</a>';
+        html += '<a href="#" class="wvd-rule-remove" title="' + escapeHtml(wvdData.i18n.remove) + '">&times;</a>';
 
         // Type select
         html += '<select class="wvd-rule-type">';
-        html += '<option value="page"' + (rule.type === 'page' ? ' selected' : '') + '>' + wvdData.i18n.page + '</option>';
-        html += '<option value="category"' + (rule.type === 'category' ? ' selected' : '') + '>' + wvdData.i18n.category + '</option>';
-        html += '<option value="post_type"' + (rule.type === 'post_type' ? ' selected' : '') + '>' + wvdData.i18n.postType + '</option>';
+        html += '<option value="page"' + (rule.type === 'page' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.page) + '</option>';
+        html += '<option value="category"' + (rule.type === 'category' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.category) + '</option>';
+        html += '<option value="post_type"' + (rule.type === 'post_type' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.postType) + '</option>';
         html += '<option value="front_page"' + (rule.type === 'front_page' ? ' selected' : '') + '>Front Page</option>';
         html += '<option value="blog"' + (rule.type === 'blog' ? ' selected' : '') + '>Blog</option>';
         html += '<option value="archive"' + (rule.type === 'archive' ? ' selected' : '') + '>Archive</option>';
@@ -130,7 +130,7 @@
         html += '</select>';
 
         // Label
-        html += '<span class="wvd-rule-label">' + wvdData.i18n.is + '</span>';
+        html += '<span class="wvd-rule-label">' + escapeHtml(wvdData.i18n.is) + '</span>';
 
         // Value select (depends on type)
         html += renderValueSelect(rule);
@@ -155,11 +155,11 @@
         switch (rule.type) {
             case 'page':
                 items = wvdData.pages;
-                placeholder = wvdData.i18n.selectPage;
+                placeholder = escapeHtml(wvdData.i18n.selectPage);
                 break;
             case 'category':
                 items = wvdData.categories;
-                placeholder = wvdData.i18n.selectCategory;
+                placeholder = escapeHtml(wvdData.i18n.selectCategory);
                 break;
             case 'post_type':
                 items = wvdData.postTypes;
@@ -173,7 +173,7 @@
         html += '<option value="">' + placeholder + '</option>';
         items.forEach(function(item) {
             var selected = (String(rule.value) === String(item.id)) ? ' selected' : '';
-            html += '<option value="' + item.id + '"' + selected + ' data-has-children="' + (item.hasChildren ? '1' : '0') + '">';
+            html += '<option value="' + escapeHtml(item.id) + '"' + selected + ' data-has-children="' + (item.hasChildren ? '1' : '0') + '">';
             html += escapeHtml(item.title);
             html += '</option>';
         });
@@ -191,13 +191,13 @@
         // Include children
         html += '<label>';
         html += '<input type="checkbox" class="wvd-include-children"' + (rule.include_children ? ' checked' : '') + '>';
-        html += ' ' + wvdData.i18n.includeChildren;
+        html += ' ' + escapeHtml(wvdData.i18n.includeChildren);
         html += '</label>';
 
         // Include all descendants
         html += '<label class="wvd-descendants-option">';
         html += '<input type="checkbox" class="wvd-include-descendants"' + (rule.include_descendants ? ' checked' : '') + '>';
-        html += ' ' + wvdData.i18n.includeDescendants;
+        html += ' ' + escapeHtml(wvdData.i18n.includeDescendants);
         html += '</label>';
 
         html += '</div>';
@@ -362,12 +362,16 @@
     }
 
     /**
-     * Escape HTML
+     * Escape HTML securely
      */
     function escapeHtml(text) {
-        var div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+        if (!text) return '';
+        return String(text)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
     }
 
 })(jQuery);
