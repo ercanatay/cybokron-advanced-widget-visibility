@@ -61,8 +61,6 @@ class WVD_Visibility_Admin {
                 'page' => __('Page', 'widget-visibility-descendants'),
                 'category' => __('Category', 'widget-visibility-descendants'),
                 'postType' => __('Post Type', 'widget-visibility-descendants'),
-                'taxonomy' => __('Taxonomy', 'widget-visibility-descendants'),
-                'author' => __('Author', 'widget-visibility-descendants'),
                 'includeChildren' => __('Include children', 'widget-visibility-descendants'),
                 'includeDescendants' => __('Include all descendants', 'widget-visibility-descendants'),
                 'matchAll' => __('Match all conditions', 'widget-visibility-descendants'),
@@ -225,7 +223,6 @@ class WVD_Visibility_Admin {
         $allowed_types = [
             'page', 'category', 'post_type', 'front_page', 'blog',
             'archive', 'search', '404', 'single', 'logged_in', 'logged_out',
-            'taxonomy', 'author'
         ];
 
         // Maximum number of rules to prevent DoS

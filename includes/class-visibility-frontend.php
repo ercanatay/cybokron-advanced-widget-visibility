@@ -34,7 +34,20 @@ class WVD_Visibility_Frontend {
         $visibility = $instance['wvd_visibility'];
         $action = isset($visibility['action']) ? $visibility['action'] : 'show';
         $match_all = !empty($visibility['match_all']);
-        $rules = $visibility['rules'];
+        $rules = is_array($visibility['rules']) ? $visibility['rules'] : [];
+        $supported_rule_types = $this->get_supported_rule_types();
+
+        // Ignore unsupported/legacy rule types before evaluating visibility.
+        $rules = array_values(array_filter($rules, function($rule) use ($supported_rule_types) {
+            return is_array($rule)
+                && !empty($rule['type'])
+                && in_array($rule['type'], $supported_rule_types, true);
+        }));
+
+        // Keep widget visible when no valid rules remain after filtering.
+        if (empty($rules)) {
+            return $instance;
+        }
 
         // Evaluate all rules
         $results = [];
@@ -53,6 +66,25 @@ class WVD_Visibility_Frontend {
             // Hide if conditions met, show otherwise
             return $conditions_met ? false : $instance;
         }
+    }
+
+    /**
+     * Supported visibility rule types.
+     */
+    private function get_supported_rule_types() {
+        return [
+            'page',
+            'category',
+            'post_type',
+            'front_page',
+            'blog',
+            'archive',
+            'search',
+            '404',
+            'single',
+            'logged_in',
+            'logged_out',
+        ];
     }
 
     /**
