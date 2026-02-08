@@ -4,7 +4,7 @@
 **Tags:** widget, visibility, descendants, grandchildren, pages
 **Requires at least:** 5.2
 **Tested up to:** 6.9
-**Stable tag:** 1.1.3
+**Stable tag:** 1.1.4
 **Requires PHP:** 7.4
 **License:** GPLv2 or later
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
@@ -144,6 +144,12 @@ No. The visibility checks are very lightweight and only run when widgets are bei
 This plugin works with classic widgets. For block-based widget areas, the visibility controls appear in the widget settings.
 
 ## Changelog
+
+### 1.1.4 (2026-02-08)
+- Security: Added defensive checks to category visibility evaluation to avoid invalid object property access.
+- Stability: Validate `get_queried_object()` returns a `WP_Term` before reading term properties on category archives.
+- Stability: Validate `get_category()` results and guard against `WP_Error` before reading parent term data on single posts.
+- Hardening: Prevent potential PHP warnings/errors and reduce information leakage risk in edge-case category queries.
 
 ### 1.1.3 (2026-02-07)
 - Fix: Category visibility type safety — cast `get_ancestors()` results to int for reliable strict comparison
