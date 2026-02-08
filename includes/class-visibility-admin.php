@@ -32,6 +32,8 @@ class WVD_Visibility_Admin {
             return;
         }
 
+        $taxonomies = $this->get_hierarchical_taxonomies();
+
         wp_enqueue_style(
             'wvd-admin-css',
             WVD_PLUGIN_URL . 'assets/css/admin.css',
@@ -52,6 +54,9 @@ class WVD_Visibility_Admin {
             'pages' => $this->get_hierarchical_pages(),
             'categories' => $this->get_categories(),
             'postTypes' => $this->get_post_types(),
+            'taxonomies' => $taxonomies,
+            'taxonomyTerms' => $this->get_taxonomy_terms($taxonomies),
+            'roles' => $this->get_user_roles(),
             'i18n' => [
                 'visibility' => __('Visibility', 'widget-visibility-descendants'),
                 'show' => __('Show', 'widget-visibility-descendants'),
@@ -61,6 +66,8 @@ class WVD_Visibility_Admin {
                 'page' => __('Page', 'widget-visibility-descendants'),
                 'category' => __('Category', 'widget-visibility-descendants'),
                 'postType' => __('Post Type', 'widget-visibility-descendants'),
+                'taxonomy' => __('Taxonomy', 'widget-visibility-descendants'),
+                'userRole' => __('User Role', 'widget-visibility-descendants'),
                 'frontPage' => __('Front Page', 'widget-visibility-descendants'),
                 'blog' => __('Blog', 'widget-visibility-descendants'),
                 'archive' => __('Archive', 'widget-visibility-descendants'),
@@ -70,6 +77,9 @@ class WVD_Visibility_Admin {
                 'loggedIn' => __('Logged In', 'widget-visibility-descendants'),
                 'loggedOut' => __('Logged Out', 'widget-visibility-descendants'),
                 'selectPostType' => __('Select a post type...', 'widget-visibility-descendants'),
+                'selectTaxonomy' => __('Select a taxonomy...', 'widget-visibility-descendants'),
+                'selectTerm' => __('Select a term...', 'widget-visibility-descendants'),
+                'selectRoles' => __('Select one or more roles...', 'widget-visibility-descendants'),
                 'configured' => __('Configured', 'widget-visibility-descendants'),
                 'includeChildren' => __('Include children', 'widget-visibility-descendants'),
                 'includeDescendants' => __('Include all descendants', 'widget-visibility-descendants'),
@@ -161,6 +171,167 @@ class WVD_Visibility_Admin {
     }
 
     /**
+     * Get hierarchical public taxonomies, excluding built-in category.
+     */
+    private function get_hierarchical_taxonomies() {
+        $taxonomies = get_taxonomies([
+            'public' => true,
+            'hierarchical' => true,
+        ], 'objects');
+
+        $options = [];
+        foreach ($taxonomies as $taxonomy) {
+            if ($taxonomy->name === 'category') {
+                continue;
+            }
+
+            $label = isset($taxonomy->labels->singular_name)
+                ? $taxonomy->labels->singular_name
+                : $taxonomy->label;
+
+            $options[] = [
+                'id' => sanitize_key($taxonomy->name),
+                'title' => sanitize_text_field($label),
+            ];
+        }
+
+        usort($options, static function($a, $b) {
+            return strcmp($a['title'], $b['title']);
+        });
+
+        return $options;
+    }
+
+    /**
+     * Get taxonomy terms grouped by taxonomy slug.
+     */
+    private function get_taxonomy_terms($taxonomies) {
+        $terms_by_taxonomy = [];
+
+        if (!is_array($taxonomies)) {
+            return $terms_by_taxonomy;
+        }
+
+        foreach ($taxonomies as $taxonomy_option) {
+            if (empty($taxonomy_option['id']) || !is_scalar($taxonomy_option['id'])) {
+                continue;
+            }
+
+            $taxonomy = sanitize_key((string) $taxonomy_option['id']);
+            if (!$this->is_valid_hierarchical_taxonomy($taxonomy)) {
+                continue;
+            }
+
+            $terms = get_terms([
+                'taxonomy' => $taxonomy,
+                'hide_empty' => false,
+                'orderby' => 'name',
+                'order' => 'ASC',
+            ]);
+
+            if (is_wp_error($terms) || !is_array($terms)) {
+                $terms_by_taxonomy[$taxonomy] = [];
+                continue;
+            }
+
+            $options = [];
+            foreach ($terms as $term) {
+                if (!($term instanceof WP_Term)) {
+                    continue;
+                }
+
+                $depth = count(get_ancestors($term->term_id, $taxonomy, 'taxonomy'));
+                $prefix = str_repeat('— ', $depth);
+
+                $children = get_terms([
+                    'taxonomy' => $taxonomy,
+                    'hide_empty' => false,
+                    'parent' => $term->term_id,
+                    'number' => 1,
+                    'fields' => 'ids',
+                ]);
+
+                $options[] = [
+                    'id' => $term->term_id,
+                    'title' => $prefix . sanitize_text_field($term->name),
+                    'parent' => $term->parent,
+                    'hasChildren' => is_array($children) && !empty($children),
+                ];
+            }
+
+            $terms_by_taxonomy[$taxonomy] = $options;
+        }
+
+        return $terms_by_taxonomy;
+    }
+
+    /**
+     * Get user roles.
+     */
+    private function get_user_roles() {
+        $wp_roles = wp_roles();
+        $options = [];
+
+        if (!($wp_roles instanceof WP_Roles) || !is_array($wp_roles->roles)) {
+            return $options;
+        }
+
+        foreach ($wp_roles->roles as $slug => $role_data) {
+            if (!is_string($slug) || !is_array($role_data)) {
+                continue;
+            }
+
+            $label = isset($role_data['name']) && is_string($role_data['name'])
+                ? translate_user_role($role_data['name'])
+                : $slug;
+
+            $options[] = [
+                'id' => sanitize_key($slug),
+                'title' => sanitize_text_field($label),
+            ];
+        }
+
+        usort($options, static function($a, $b) {
+            return strcmp($a['title'], $b['title']);
+        });
+
+        return $options;
+    }
+
+    /**
+     * Get available role slugs.
+     */
+    private function get_role_slugs() {
+        $roles = $this->get_user_roles();
+        $role_slugs = [];
+
+        foreach ($roles as $role) {
+            if (!empty($role['id']) && is_scalar($role['id'])) {
+                $role_slugs[] = sanitize_key((string) $role['id']);
+            }
+        }
+
+        return array_values(array_unique($role_slugs));
+    }
+
+    /**
+     * Validate hierarchical public taxonomy slug.
+     */
+    private function is_valid_hierarchical_taxonomy($taxonomy) {
+        if (!is_string($taxonomy) || $taxonomy === '' || $taxonomy === 'category') {
+            return false;
+        }
+
+        $taxonomy_obj = get_taxonomy($taxonomy);
+
+        if (!is_object($taxonomy_obj)) {
+            return false;
+        }
+
+        return !empty($taxonomy_obj->public) && !empty($taxonomy_obj->hierarchical);
+    }
+
+    /**
      * Render visibility UI in widget form
      */
     public function render_visibility_ui($widget, $return, $instance) {
@@ -216,6 +387,7 @@ class WVD_Visibility_Admin {
      * Security hardening:
      * - Whitelist allowed rule types to prevent injection
      * - Limit rules to 50 max to prevent DoS/resource exhaustion
+     * - Validate taxonomy and role payloads
      * - Limit value length to 100 characters to prevent database bloat
      */
     private function sanitize_visibility_data($data) {
@@ -232,7 +404,8 @@ class WVD_Visibility_Admin {
         // Whitelist of allowed rule types for security
         $allowed_types = [
             'page', 'category', 'post_type', 'front_page', 'blog',
-            'archive', 'search', '404', 'single', 'logged_in', 'logged_out'
+            'archive', 'search', '404', 'single', 'logged_in', 'logged_out',
+            'taxonomy', 'user_role',
         ];
 
         // Maximum number of rules to prevent DoS
@@ -240,6 +413,12 @@ class WVD_Visibility_Admin {
 
         // Maximum value length to prevent database bloat
         $max_value_length = 100;
+
+        // Maximum number of role values in one rule
+        $max_role_values = 20;
+
+        $valid_post_types = array_map('sanitize_key', get_post_types(['public' => true], 'names'));
+        $valid_roles = $this->get_role_slugs();
 
         if (!empty($data['rules']) && is_array($data['rules'])) {
             $count = 0;
@@ -249,12 +428,7 @@ class WVD_Visibility_Admin {
                     break;
                 }
 
-                if (!isset($rule['type']) || !isset($rule['value'])) {
-                    continue;
-                }
-
-                // Ensure type and value are scalar (disallow arrays/objects)
-                if (!is_scalar($rule['type']) || !is_scalar($rule['value'])) {
+                if (!is_array($rule) || !isset($rule['type']) || !is_scalar($rule['type'])) {
                     continue;
                 }
 
@@ -265,18 +439,116 @@ class WVD_Visibility_Admin {
                 }
 
                 // Sanitize and limit value length
-                $value = sanitize_text_field((string) $rule['value']);
+                $value = '';
+                if (isset($rule['value']) && is_scalar($rule['value'])) {
+                    $value = sanitize_text_field((string) $rule['value']);
+                }
                 if (strlen($value) > $max_value_length) {
                     $value = substr($value, 0, $max_value_length);
                 }
 
                 $sanitized_rule = [
                     'type' => $type,
-                    'value' => $value,
                     'include_children' => !empty($rule['include_children']),
                     'include_descendants' => !empty($rule['include_descendants']),
                 ];
 
+                if ('user_role' === $type) {
+                    $candidate_roles = [];
+
+                    if (isset($rule['values']) && is_array($rule['values'])) {
+                        $candidate_roles = $rule['values'];
+                    } elseif ($value !== '') {
+                        // Backward-compatible fallback if a single scalar role value is provided.
+                        $candidate_roles = [$value];
+                    }
+
+                    $roles = [];
+                    foreach ($candidate_roles as $candidate_role) {
+                        if (count($roles) >= $max_role_values) {
+                            break;
+                        }
+
+                        if (!is_scalar($candidate_role)) {
+                            continue;
+                        }
+
+                        $role_slug = sanitize_key((string) $candidate_role);
+                        if ($role_slug !== '' && in_array($role_slug, $valid_roles, true)) {
+                            $roles[] = $role_slug;
+                        }
+                    }
+
+                    $roles = array_values(array_unique($roles));
+                    if (empty($roles)) {
+                        continue;
+                    }
+
+                    $sanitized_rule['values'] = $roles;
+                    $sanitized_rule['value'] = '';
+                    $sanitized_rule['include_children'] = false;
+                    $sanitized_rule['include_descendants'] = false;
+                    $sanitized['rules'][] = $sanitized_rule;
+                    $count++;
+                    continue;
+                }
+
+                if ('taxonomy' === $type) {
+                    if (!isset($rule['taxonomy']) || !is_scalar($rule['taxonomy'])) {
+                        continue;
+                    }
+
+                    $taxonomy = sanitize_key((string) $rule['taxonomy']);
+                    if (!$this->is_valid_hierarchical_taxonomy($taxonomy)) {
+                        continue;
+                    }
+
+                    $term_id = absint($value);
+                    if ($term_id <= 0) {
+                        continue;
+                    }
+
+                    $term = get_term($term_id, $taxonomy);
+                    if (!($term instanceof WP_Term) || is_wp_error($term)) {
+                        continue;
+                    }
+
+                    $sanitized_rule['taxonomy'] = $taxonomy;
+                    $sanitized_rule['value'] = (string) $term_id;
+                    $sanitized['rules'][] = $sanitized_rule;
+                    $count++;
+                    continue;
+                }
+
+                if ('post_type' === $type) {
+                    $value = sanitize_key($value);
+                    if ($value === '' || !in_array($value, $valid_post_types, true)) {
+                        continue;
+                    }
+
+                    $sanitized_rule['value'] = $value;
+                    $sanitized_rule['include_children'] = false;
+                    $sanitized_rule['include_descendants'] = false;
+                    $sanitized['rules'][] = $sanitized_rule;
+                    $count++;
+                    continue;
+                }
+
+                if (in_array($type, ['page', 'category'], true)) {
+                    $entity_id = absint($value);
+                    if ($entity_id <= 0) {
+                        continue;
+                    }
+
+                    $sanitized_rule['value'] = (string) $entity_id;
+                    $sanitized['rules'][] = $sanitized_rule;
+                    $count++;
+                    continue;
+                }
+
+                $sanitized_rule['value'] = $value;
+                $sanitized_rule['include_children'] = false;
+                $sanitized_rule['include_descendants'] = false;
                 $sanitized['rules'][] = $sanitized_rule;
                 $count++;
             }

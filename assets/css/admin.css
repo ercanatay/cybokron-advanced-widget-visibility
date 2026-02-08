@@ -111,6 +111,30 @@
     max-width: 250px;
 }
 
+.wvd-rule-value-container {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.wvd-taxonomy-control {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.wvd-rule-taxonomy {
+    min-width: 180px !important;
+    max-width: 250px;
+}
+
+.wvd-rule-values {
+    min-width: 220px !important;
+    max-width: 280px;
+    min-height: 90px;
+}
+
 /* Rule Label */
 .wvd-rule-label {
     color: #666;
@@ -218,7 +242,12 @@
         flex-direction: column;
     }
 
-    .wvd-rule select {
+    .wvd-rule select,
+    .wvd-rule-values,
+    .wvd-rule-taxonomy,
+    .wvd-rule-value,
+    .wvd-rule-value-container,
+    .wvd-taxonomy-control {
         width: 100%;
         max-width: none;
     }

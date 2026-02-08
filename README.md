@@ -4,7 +4,7 @@
 **Tags:** widget, visibility, descendants, grandchildren, pages
 **Requires at least:** 5.2
 **Tested up to:** 6.9
-**Stable tag:** 1.1.4
+**Stable tag:** 1.3.0
 **Requires PHP:** 7.4
 **License:** GPLv2 or later
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
@@ -38,8 +38,10 @@ This plugin adds an **"Include all descendants"** option that includes ALL level
 - 🎛️ **Show/Hide widgets** based on conditions
 - 📄 **Page visibility** with full descendant support
 - 📁 **Category visibility** with hierarchy support
+- 🏷️ **Custom taxonomy visibility** with descendant support
 - 📝 **Post type** conditions
 - 🏠 **Special pages**: Front page, Blog, Archive, Search, 404
+- 👥 **User role targeting** (any selected role)
 - 👤 **User state**: Logged in / Logged out
 - 🔗 **Multiple conditions** with AND/OR logic
 - 🚀 **Jetpack-free** - no dependencies
@@ -99,7 +101,9 @@ git clone https://github.com/ercanatay/widget-visibility-descendants.git
 |------|-------------|
 | Page | Specific page with optional descendants |
 | Category | Category archive or posts in category |
+| Taxonomy | Hierarchical custom taxonomy archive/posts with optional descendants |
 | Post Type | Any post type (post, page, custom) |
+| User Role | Match logged-in users by one or more selected roles |
 | Front Page | Site front page |
 | Blog | Blog posts page |
 | Archive | Any archive page |
@@ -144,6 +148,14 @@ No. The visibility checks are very lightweight and only run when widgets are bei
 This plugin works with classic widgets. For block-based widget areas, the visibility controls appear in the widget settings.
 
 ## Changelog
+
+### 1.3.0 (2026-02-08)
+- Feature: Added `taxonomy` rule type for hierarchical custom taxonomies (archive + singular post term matching).
+- Feature: Added descendant and child matching support for custom taxonomy terms.
+- Feature: Added `user_role` rule type with multi-select role matching (any selected role).
+- Security: Added strict sanitization/validation for taxonomy slugs, term IDs, post types, and role arrays.
+- Performance: Added request-level taxonomy ancestor caching in frontend evaluator.
+- i18n: Added new admin UI strings and updated translation template (.pot) for taxonomy/user role controls.
 
 ### 1.1.4 (2026-02-08)
 - Security: Added defensive checks to category visibility evaluation to avoid invalid object property access.

@@ -16,6 +16,13 @@ if (!defined('ABSPATH')) {
 class WVD_Visibility_Frontend {
 
     /**
+     * Cached term ancestors to avoid repeated taxonomy lookups.
+     *
+     * @var array<string, int[]>
+     */
+    private $term_ancestor_cache = [];
+
+    /**
      * Constructor
      */
     public function __construct() {
@@ -84,6 +91,8 @@ class WVD_Visibility_Frontend {
             'single',
             'logged_in',
             'logged_out',
+            'taxonomy',
+            'user_role',
         ];
     }
 
@@ -93,6 +102,8 @@ class WVD_Visibility_Frontend {
     private function evaluate_rule($rule) {
         $type = isset($rule['type']) ? $rule['type'] : '';
         $value = isset($rule['value']) ? $rule['value'] : '';
+        $taxonomy = isset($rule['taxonomy']) ? sanitize_key((string) $rule['taxonomy']) : '';
+        $values = isset($rule['values']) && is_array($rule['values']) ? $rule['values'] : [];
         $include_children = !empty($rule['include_children']);
         $include_descendants = !empty($rule['include_descendants']);
 
@@ -105,6 +116,9 @@ class WVD_Visibility_Frontend {
 
             case 'post_type':
                 return $this->evaluate_post_type_rule($value);
+
+            case 'taxonomy':
+                return $this->evaluate_taxonomy_rule($taxonomy, $value, $include_children, $include_descendants);
 
             case 'front_page':
                 return is_front_page();
@@ -129,6 +143,9 @@ class WVD_Visibility_Frontend {
 
             case 'logged_out':
                 return !is_user_logged_in();
+
+            case 'user_role':
+                return $this->evaluate_user_role_rule($values);
 
             default:
                 return false;
@@ -246,5 +263,136 @@ class WVD_Visibility_Frontend {
         }
 
         return false;
+    }
+
+    /**
+     * Evaluate custom taxonomy rule with descendant support.
+     */
+    private function evaluate_taxonomy_rule($taxonomy, $term_id, $include_children, $include_descendants) {
+        if (!is_string($taxonomy) || $taxonomy === '' || !taxonomy_exists($taxonomy)) {
+            return false;
+        }
+
+        $term_id = absint($term_id);
+        if ($term_id <= 0) {
+            return false;
+        }
+
+        $term = get_term($term_id, $taxonomy);
+        if (!($term instanceof WP_Term) || is_wp_error($term)) {
+            return false;
+        }
+
+        if (is_tax($taxonomy)) {
+            $current_term = get_queried_object();
+            if (!($current_term instanceof WP_Term) || $current_term->taxonomy !== $taxonomy) {
+                return false;
+            }
+
+            if ((int) $current_term->term_id === $term_id) {
+                return true;
+            }
+
+            if ($include_descendants) {
+                $ancestors = $this->get_term_ancestors($current_term->term_id, $taxonomy);
+                if (in_array($term_id, $ancestors, true)) {
+                    return true;
+                }
+            }
+
+            if ($include_children && (int) $current_term->parent === $term_id) {
+                return true;
+            }
+        }
+
+        if (is_singular()) {
+            $post_id = get_queried_object_id();
+            if (!$post_id) {
+                return false;
+            }
+
+            $post_terms = wp_get_post_terms($post_id, $taxonomy, ['fields' => 'ids']);
+            if (is_wp_error($post_terms) || !is_array($post_terms) || empty($post_terms)) {
+                return false;
+            }
+
+            $post_terms = array_map('intval', $post_terms);
+            if (in_array($term_id, $post_terms, true)) {
+                return true;
+            }
+
+            if ($include_children || $include_descendants) {
+                foreach ($post_terms as $post_term_id) {
+                    if ($include_descendants) {
+                        $ancestors = $this->get_term_ancestors($post_term_id, $taxonomy);
+                        if (in_array($term_id, $ancestors, true)) {
+                            return true;
+                        }
+                    }
+
+                    if ($include_children) {
+                        $post_term = get_term($post_term_id, $taxonomy);
+                        if ($post_term instanceof WP_Term && !is_wp_error($post_term) && (int) $post_term->parent === $term_id) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Evaluate user role rule (any selected role).
+     */
+    private function evaluate_user_role_rule($selected_roles) {
+        if (!is_user_logged_in() || !is_array($selected_roles) || empty($selected_roles)) {
+            return false;
+        }
+
+        $user = wp_get_current_user();
+        if (!($user instanceof WP_User) || empty($user->ID) || !is_array($user->roles)) {
+            return false;
+        }
+
+        $user_roles = array_map('sanitize_key', $user->roles);
+        foreach ($selected_roles as $selected_role) {
+            if (!is_scalar($selected_role)) {
+                continue;
+            }
+
+            $selected_role = sanitize_key((string) $selected_role);
+            if ($selected_role !== '' && in_array($selected_role, $user_roles, true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get cached term ancestors as integers.
+     *
+     * @return int[]
+     */
+    private function get_term_ancestors($term_id, $taxonomy) {
+        $term_id = absint($term_id);
+        $taxonomy = sanitize_key((string) $taxonomy);
+
+        if ($term_id <= 0 || $taxonomy === '') {
+            return [];
+        }
+
+        $cache_key = $taxonomy . ':' . $term_id;
+        if (isset($this->term_ancestor_cache[$cache_key])) {
+            return $this->term_ancestor_cache[$cache_key];
+        }
+
+        $ancestors = get_ancestors($term_id, $taxonomy, 'taxonomy');
+        $ancestors = is_array($ancestors) ? array_map('intval', $ancestors) : [];
+
+        $this->term_ancestor_cache[$cache_key] = $ancestors;
+        return $ancestors;
     }
 }

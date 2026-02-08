@@ -109,6 +109,11 @@
      * Render a single rule
      */
     function renderRule(rule, index) {
+        var normalizedRule = normalizeRule(rule);
+        if (!normalizedRule) {
+            normalizedRule = getDefaultRule('page');
+        }
+
         var html = '<div class="wvd-rule" data-index="' + index + '">';
 
         // Remove button
@@ -116,28 +121,32 @@
 
         // Type select
         html += '<select class="wvd-rule-type">';
-        html += '<option value="page"' + (rule.type === 'page' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.page) + '</option>';
-        html += '<option value="category"' + (rule.type === 'category' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.category) + '</option>';
-        html += '<option value="post_type"' + (rule.type === 'post_type' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.postType) + '</option>';
-        html += '<option value="front_page"' + (rule.type === 'front_page' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.frontPage) + '</option>';
-        html += '<option value="blog"' + (rule.type === 'blog' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.blog) + '</option>';
-        html += '<option value="archive"' + (rule.type === 'archive' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.archive) + '</option>';
-        html += '<option value="search"' + (rule.type === 'search' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.search) + '</option>';
-        html += '<option value="404"' + (rule.type === '404' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.notFound) + '</option>';
-        html += '<option value="single"' + (rule.type === 'single' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.single) + '</option>';
-        html += '<option value="logged_in"' + (rule.type === 'logged_in' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.loggedIn) + '</option>';
-        html += '<option value="logged_out"' + (rule.type === 'logged_out' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.loggedOut) + '</option>';
+        html += '<option value="page"' + (normalizedRule.type === 'page' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.page) + '</option>';
+        html += '<option value="category"' + (normalizedRule.type === 'category' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.category) + '</option>';
+        html += '<option value="post_type"' + (normalizedRule.type === 'post_type' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.postType) + '</option>';
+        html += '<option value="taxonomy"' + (normalizedRule.type === 'taxonomy' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.taxonomy) + '</option>';
+        html += '<option value="user_role"' + (normalizedRule.type === 'user_role' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.userRole) + '</option>';
+        html += '<option value="front_page"' + (normalizedRule.type === 'front_page' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.frontPage) + '</option>';
+        html += '<option value="blog"' + (normalizedRule.type === 'blog' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.blog) + '</option>';
+        html += '<option value="archive"' + (normalizedRule.type === 'archive' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.archive) + '</option>';
+        html += '<option value="search"' + (normalizedRule.type === 'search' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.search) + '</option>';
+        html += '<option value="404"' + (normalizedRule.type === '404' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.notFound) + '</option>';
+        html += '<option value="single"' + (normalizedRule.type === 'single' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.single) + '</option>';
+        html += '<option value="logged_in"' + (normalizedRule.type === 'logged_in' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.loggedIn) + '</option>';
+        html += '<option value="logged_out"' + (normalizedRule.type === 'logged_out' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.loggedOut) + '</option>';
         html += '</select>';
 
         // Label
         html += '<span class="wvd-rule-label">' + escapeHtml(wvdData.i18n.is) + '</span>';
 
-        // Value select (depends on type)
-        html += renderValueSelect(rule);
+        // Value control (depends on type)
+        html += '<span class="wvd-rule-value-container">';
+        html += renderValueControl(normalizedRule);
+        html += '</span>';
 
         // Options (checkboxes)
-        if (rule.type === 'page' || rule.type === 'category') {
-            html += renderRuleOptions(rule);
+        if (ruleSupportsHierarchyOptions(normalizedRule.type)) {
+            html += renderRuleOptions(normalizedRule);
         }
 
         html += '</div>';
@@ -145,40 +154,124 @@
     }
 
     /**
-     * Render value select based on rule type
+     * Render value control based on rule type
      */
-    function renderValueSelect(rule) {
-        var html = '';
+    function renderValueControl(rule) {
         var items = [];
         var placeholder = '';
 
         switch (rule.type) {
             case 'page':
-                items = wvdData.pages;
+                items = Array.isArray(wvdData.pages) ? wvdData.pages : [];
                 placeholder = escapeHtml(wvdData.i18n.selectPage);
-                break;
+                return renderSingleValueSelect(items, placeholder, rule.value);
+
             case 'category':
-                items = wvdData.categories;
+                items = Array.isArray(wvdData.categories) ? wvdData.categories : [];
                 placeholder = escapeHtml(wvdData.i18n.selectCategory);
-                break;
+                return renderSingleValueSelect(items, placeholder, rule.value);
+
             case 'post_type':
-                items = wvdData.postTypes;
+                items = Array.isArray(wvdData.postTypes) ? wvdData.postTypes : [];
                 placeholder = escapeHtml(wvdData.i18n.selectPostType);
-                break;
+                return renderSingleValueSelect(items, placeholder, rule.value);
+
+            case 'taxonomy':
+                return renderTaxonomyValueControl(rule);
+
+            case 'user_role':
+                return renderRoleValueControl(rule);
+
             default:
                 return '<span class="wvd-rule-value-na">—</span>';
         }
+    }
 
-        html += '<select class="wvd-rule-value">';
+    /**
+     * Render single-select value control
+     */
+    function renderSingleValueSelect(items, placeholder, selectedValue) {
+        var html = '<select class="wvd-rule-value">';
         html += '<option value="">' + placeholder + '</option>';
+
         items.forEach(function(item) {
-            var selected = (String(rule.value) === String(item.id)) ? ' selected' : '';
-            html += '<option value="' + escapeHtml(item.id) + '"' + selected + ' data-has-children="' + (item.hasChildren ? '1' : '0') + '">';
+            var selected = (String(selectedValue) === String(item.id)) ? ' selected' : '';
+            var hasChildren = item.hasChildren ? '1' : '0';
+            html += '<option value="' + escapeHtml(item.id) + '"' + selected + ' data-has-children="' + hasChildren + '">';
             html += escapeHtml(item.title);
+            html += '</option>';
+        });
+
+        html += '</select>';
+        return html;
+    }
+
+    /**
+     * Render taxonomy selector + term selector.
+     */
+    function renderTaxonomyValueControl(rule) {
+        var taxonomies = Array.isArray(wvdData.taxonomies) ? wvdData.taxonomies : [];
+        var selectedTaxonomy = (typeof rule.taxonomy === 'string') ? rule.taxonomy : '';
+        var selectedTerm = rule.value || '';
+        var html = '<span class="wvd-taxonomy-control">';
+
+        html += '<select class="wvd-rule-taxonomy">';
+        html += '<option value="">' + escapeHtml(wvdData.i18n.selectTaxonomy) + '</option>';
+        taxonomies.forEach(function(taxonomy) {
+            var selected = (selectedTaxonomy === taxonomy.id) ? ' selected' : '';
+            html += '<option value="' + escapeHtml(taxonomy.id) + '"' + selected + '>';
+            html += escapeHtml(taxonomy.title);
             html += '</option>';
         });
         html += '</select>';
 
+        html += renderTaxonomyTermSelect(selectedTaxonomy, selectedTerm);
+        html += '</span>';
+
+        return html;
+    }
+
+    /**
+     * Render term selector for selected taxonomy.
+     */
+    function renderTaxonomyTermSelect(taxonomy, selectedTerm) {
+        var termsMap = (wvdData && wvdData.taxonomyTerms) ? wvdData.taxonomyTerms : {};
+        var terms = (taxonomy && Array.isArray(termsMap[taxonomy])) ? termsMap[taxonomy] : [];
+        var html = '<select class="wvd-rule-value">';
+        html += '<option value="">' + escapeHtml(wvdData.i18n.selectTerm) + '</option>';
+
+        terms.forEach(function(term) {
+            var selected = (String(selectedTerm) === String(term.id)) ? ' selected' : '';
+            var hasChildren = term.hasChildren ? '1' : '0';
+            html += '<option value="' + escapeHtml(term.id) + '"' + selected + ' data-has-children="' + hasChildren + '">';
+            html += escapeHtml(term.title);
+            html += '</option>';
+        });
+
+        html += '</select>';
+        return html;
+    }
+
+    /**
+     * Render multi-role selector.
+     */
+    function renderRoleValueControl(rule) {
+        var roles = Array.isArray(wvdData.roles) ? wvdData.roles : [];
+        var selectedRoles = Array.isArray(rule.values) ? rule.values.map(String) : [];
+        var html = '<select class="wvd-rule-values" multiple="multiple" size="4">';
+
+        if (roles.length === 0) {
+            html += '<option value="" disabled="disabled">' + escapeHtml(wvdData.i18n.selectRoles) + '</option>';
+        }
+
+        roles.forEach(function(role) {
+            var selected = selectedRoles.indexOf(String(role.id)) !== -1 ? ' selected' : '';
+            html += '<option value="' + escapeHtml(role.id) + '"' + selected + '>';
+            html += escapeHtml(role.title);
+            html += '</option>';
+        });
+
+        html += '</select>';
         return html;
     }
 
@@ -220,17 +313,20 @@
         $content.on('change', '.wvd-rule-type', function() {
             var $rule = $(this).closest('.wvd-rule');
             var type = $(this).val();
+            var defaultRule = getDefaultRule(type);
 
-            // Update value select
-            var rule = { type: type, value: '', include_children: false, include_descendants: false };
-            var $valueContainer = $rule.find('.wvd-rule-value, .wvd-rule-value-na');
-            $valueContainer.replaceWith($(renderValueSelect(rule)));
+            // Update value control
+            $rule.find('.wvd-rule-value-container').replaceWith(
+                '<span class="wvd-rule-value-container">' + renderValueControl(defaultRule) + '</span>'
+            );
 
             // Update options
             var $optionsContainer = $rule.find('.wvd-rule-options');
-            if (type === 'page' || type === 'category') {
+            if (ruleSupportsHierarchyOptions(type)) {
                 if ($optionsContainer.length === 0) {
-                    $rule.append(renderRuleOptions(rule));
+                    $rule.append(renderRuleOptions(defaultRule));
+                } else {
+                    $optionsContainer.replaceWith(renderRuleOptions(defaultRule));
                 }
             } else {
                 $optionsContainer.remove();
@@ -239,8 +335,17 @@
             updateData($content, $dataInput);
         });
 
-        // Value change
-        $content.on('change', '.wvd-rule-value', function() {
+        // Taxonomy selector change
+        $content.on('change', '.wvd-rule-taxonomy', function() {
+            var $taxonomySelect = $(this);
+            var taxonomy = $taxonomySelect.val() || '';
+            var $taxonomyControl = $taxonomySelect.closest('.wvd-taxonomy-control');
+            $taxonomyControl.find('.wvd-rule-value').replaceWith(renderTaxonomyTermSelect(taxonomy, ''));
+            updateData($content, $dataInput);
+        });
+
+        // Value changes
+        $content.on('change', '.wvd-rule-value, .wvd-rule-values', function() {
             updateData($content, $dataInput);
         });
 
@@ -272,8 +377,7 @@
             e.preventDefault();
             var $rules = $content.find('.wvd-rules');
             var index = $rules.find('.wvd-rule').length;
-            var newRule = { type: 'page', value: '', include_children: false, include_descendants: false };
-            $rules.append(renderRule(newRule, index));
+            $rules.append(renderRule(getDefaultRule('page'), index));
             updateData($content, $dataInput);
         });
 
@@ -313,12 +417,30 @@
 
         $content.find('.wvd-rule').each(function() {
             var $rule = $(this);
+            var type = $rule.find('.wvd-rule-type').val();
             var rule = {
-                type: $rule.find('.wvd-rule-type').val(),
-                value: $rule.find('.wvd-rule-value').val() || '',
+                type: type,
+                value: '',
                 include_children: $rule.find('.wvd-include-children').is(':checked'),
                 include_descendants: $rule.find('.wvd-include-descendants').is(':checked')
             };
+
+            if (type === 'taxonomy') {
+                rule.taxonomy = $rule.find('.wvd-rule-taxonomy').val() || '';
+                rule.value = $rule.find('.wvd-rule-value').val() || '';
+            } else if (type === 'user_role') {
+                var roleValues = $rule.find('.wvd-rule-values').val();
+                roleValues = Array.isArray(roleValues) ? roleValues : [];
+                rule.values = roleValues.filter(function(roleValue) {
+                    return roleValue !== '';
+                });
+                rule.value = '';
+                rule.include_children = false;
+                rule.include_descendants = false;
+            } else if ($rule.find('.wvd-rule-value').length) {
+                rule.value = $rule.find('.wvd-rule-value').val() || '';
+            }
+
             data.rules.push(rule);
         });
 
@@ -329,18 +451,120 @@
     }
 
     /**
-     * Get visibility data from input
+     * Get visibility data from input and normalize for rendering.
      */
     function getVisibilityData($dataInput) {
+        var fallback = { action: 'show', match_all: false, rules: [] };
         var val = $dataInput.val();
+
         if (!val) {
-            return { action: 'show', match_all: false, rules: [] };
+            return fallback;
         }
+
         try {
-            return JSON.parse(val);
+            var parsed = JSON.parse(val);
+            if (!parsed || typeof parsed !== 'object') {
+                return fallback;
+            }
+
+            var normalized = {
+                action: parsed.action === 'hide' ? 'hide' : 'show',
+                match_all: !!parsed.match_all,
+                rules: []
+            };
+
+            if (Array.isArray(parsed.rules)) {
+                parsed.rules.forEach(function(rule) {
+                    var normalizedRule = normalizeRule(rule);
+                    if (normalizedRule) {
+                        normalized.rules.push(normalizedRule);
+                    }
+                });
+            }
+
+            return normalized;
         } catch (e) {
-            return { action: 'show', match_all: false, rules: [] };
+            return fallback;
         }
+    }
+
+    /**
+     * Normalize any stored rule object for UI rendering.
+     */
+    function normalizeRule(rule) {
+        if (!rule || typeof rule !== 'object') {
+            return null;
+        }
+
+        var type = (typeof rule.type === 'string' && rule.type !== '') ? rule.type : 'page';
+        var normalized = getDefaultRule(type);
+
+        if (Object.prototype.hasOwnProperty.call(rule, 'value') && rule.value !== null && typeof rule.value !== 'undefined') {
+            normalized.value = String(rule.value);
+        }
+
+        normalized.include_children = !!rule.include_children;
+        normalized.include_descendants = !!rule.include_descendants;
+
+        if (normalized.include_descendants) {
+            normalized.include_children = true;
+        }
+
+        if (type === 'taxonomy') {
+            normalized.taxonomy = (typeof rule.taxonomy === 'string') ? rule.taxonomy : '';
+        }
+
+        if (type === 'user_role') {
+            if (Array.isArray(rule.values)) {
+                normalized.values = rule.values.map(function(value) {
+                    return String(value);
+                });
+            } else if (typeof rule.value === 'string' && rule.value !== '') {
+                normalized.values = [rule.value];
+            } else {
+                normalized.values = [];
+            }
+            normalized.value = '';
+            normalized.include_children = false;
+            normalized.include_descendants = false;
+        }
+
+        if (!ruleSupportsHierarchyOptions(type)) {
+            normalized.include_children = false;
+            normalized.include_descendants = false;
+        }
+
+        return normalized;
+    }
+
+    /**
+     * Create default rule payload.
+     */
+    function getDefaultRule(type) {
+        var defaultType = type || 'page';
+        var rule = {
+            type: defaultType,
+            value: '',
+            include_children: false,
+            include_descendants: false
+        };
+
+        if (defaultType === 'taxonomy') {
+            rule.taxonomy = '';
+        }
+
+        if (defaultType === 'user_role') {
+            rule.values = [];
+        }
+
+        return rule;
+    }
+
+    /**
+     * Rule types that support child/descendant options.
+     */
+    function ruleSupportsHierarchyOptions(type) {
+        return type === 'page' || type === 'category' || type === 'taxonomy';
     }
 
     /**
@@ -365,7 +589,9 @@
      * Escape HTML securely
      */
     function escapeHtml(text) {
-        if (!text) return '';
+        if (!text) {
+            return '';
+        }
         return String(text)
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
