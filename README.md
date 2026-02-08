@@ -9,7 +9,7 @@
 **License:** GPLv2 or later
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
 
-Show or hide widgets on pages and all their child pages.
+Show or hide widgets by page, category, taxonomy, post type, and user context with descendant support.
 
 == Description ==
 
@@ -38,7 +38,7 @@ This plugin adds an **"Include all descendants"** option that includes ALL level
 - 🎛️ **Show/Hide widgets** based on conditions
 - 📄 **Page visibility** with full descendant support
 - 📁 **Category visibility** with hierarchy support
-- 🏷️ **Custom taxonomy visibility** with descendant support
+- 🏷️ **Hierarchical custom taxonomy visibility** with descendant support
 - 📝 **Post type** conditions
 - 🏠 **Special pages**: Front page, Blog, Archive, Search, 404
 - 👥 **User role targeting** (any selected role)
@@ -101,7 +101,7 @@ git clone https://github.com/ercanatay/widget-visibility-descendants.git
 |------|-------------|
 | Page | Specific page with optional descendants |
 | Category | Category archive or posts in category |
-| Taxonomy | Hierarchical custom taxonomy archive/posts with optional descendants |
+| Taxonomy | Hierarchical public custom taxonomy archive/posts with optional descendants |
 | Post Type | Any post type (post, page, custom) |
 | User Role | Match logged-in users by one or more selected roles |
 | Front Page | Site front page |
@@ -150,7 +150,7 @@ This plugin works with classic widgets. For block-based widget areas, the visibi
 ## Changelog
 
 ### 1.3.1 (2026-02-08)
-- Fix: Improved category rule evaluation robustness for single posts (`PR #19`).
+- Fix: Improved category rule evaluation robustness for single posts ([PR #19](https://github.com/ercanatay/widget-visibility-descendants/pull/19)).
 - Stability: Switched post ID lookup to `get_queried_object_id()` in widget visibility checks.
 - Hardening: Added zero-ID guard and `WP_Error`/array validation for `wp_get_post_categories()` results.
 - Type Safety: Cast single-post category IDs to integers for reliable strict comparison.
