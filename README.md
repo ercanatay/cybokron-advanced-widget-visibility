@@ -4,7 +4,7 @@
 **Tags:** widget, visibility, descendants, grandchildren, pages
 **Requires at least:** 5.2
 **Tested up to:** 6.9
-**Stable tag:** 1.3.0
+**Stable tag:** 1.3.1
 **Requires PHP:** 7.4
 **License:** GPLv2 or later
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
@@ -148,6 +148,12 @@ No. The visibility checks are very lightweight and only run when widgets are bei
 This plugin works with classic widgets. For block-based widget areas, the visibility controls appear in the widget settings.
 
 ## Changelog
+
+### 1.3.1 (2026-02-08)
+- Fix: Improved category rule evaluation robustness for single posts (`PR #19`).
+- Stability: Switched post ID lookup to `get_queried_object_id()` in widget visibility checks.
+- Hardening: Added zero-ID guard and `WP_Error`/array validation for `wp_get_post_categories()` results.
+- Type Safety: Cast single-post category IDs to integers for reliable strict comparison.
 
 ### 1.3.0 (2026-02-08)
 - Feature: Added `taxonomy` rule type for hierarchical custom taxonomies (archive + singular post term matching).
