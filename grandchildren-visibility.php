@@ -89,10 +89,8 @@ final class Widget_Visibility_Descendants {
         // Load translations
         add_action('plugins_loaded', array($this, 'load_textdomain'));
 
-        // Initialize admin
-        if (is_admin()) {
-            new WVD_Visibility_Admin();
-        }
+        // Initialize admin and data handling
+        new WVD_Visibility_Admin();
 
         // Initialize frontend
         new WVD_Visibility_Frontend();
