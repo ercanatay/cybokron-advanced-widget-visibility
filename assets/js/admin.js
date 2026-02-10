@@ -117,7 +117,7 @@
         var html = '<div class="wvd-rule" data-index="' + index + '">';
 
         // Remove button
-        html += '<a href="#" class="wvd-rule-remove" title="' + escapeHtml(wvdData.i18n.remove) + '">&times;</a>';
+        html += '<button type="button" class="wvd-rule-remove" aria-label="' + escapeHtml(wvdData.i18n.remove) + '" title="' + escapeHtml(wvdData.i18n.remove) + '">&times;</button>';
 
         // Type select
         html += '<select class="wvd-rule-type">';

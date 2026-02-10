@@ -91,6 +91,8 @@
     line-height: 1;
     padding: 5px;
     text-decoration: none;
+    background: transparent;
+    border: none;
 }
 
 .wvd-rule-remove:hover {
