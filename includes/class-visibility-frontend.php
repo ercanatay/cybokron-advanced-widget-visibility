@@ -156,12 +156,12 @@ class WVD_Visibility_Frontend {
      * Evaluate page rule with descendant support
      */
     private function evaluate_page_rule($page_id, $include_children, $include_descendants) {
-        if (!is_page()) {
+        $page_id = absint($page_id);
+        if ($page_id <= 0 || !is_page()) {
             return false;
         }
 
         $current_page_id = get_queried_object_id();
-        $page_id = intval($page_id);
 
         // Exact match
         if ($current_page_id === $page_id) {
@@ -171,15 +171,14 @@ class WVD_Visibility_Frontend {
         // Include all descendants (grandchildren, great-grandchildren, etc.)
         if ($include_descendants) {
             $ancestors = get_post_ancestors($current_page_id);
-            // Convert all ancestor IDs to integers for reliable comparison
-            $ancestors = array_map('intval', $ancestors);
+            $ancestors = array_map('absint', $ancestors);
             return in_array($page_id, $ancestors, true);
         }
 
         // Include only direct children
         if ($include_children) {
             $current_page = get_post($current_page_id);
-            return $current_page && intval($current_page->post_parent) === $page_id;
+            return $current_page && absint($current_page->post_parent) === $page_id;
         }
 
         return false;
@@ -189,7 +188,10 @@ class WVD_Visibility_Frontend {
      * Evaluate category rule with descendant support
      */
     private function evaluate_category_rule($cat_id, $include_children, $include_descendants) {
-        $cat_id = intval($cat_id);
+        $cat_id = absint($cat_id);
+        if ($cat_id <= 0) {
+            return false;
+        }
 
         // Check if viewing category archive
         if (is_category()) {
@@ -208,13 +210,13 @@ class WVD_Visibility_Frontend {
             // Include descendants
             if ($include_descendants) {
                 $ancestors = get_ancestors($current_cat->term_id, 'category');
-                $ancestors = array_map('intval', $ancestors);
+                $ancestors = array_map('absint', $ancestors);
                 return in_array($cat_id, $ancestors, true);
             }
 
             // Include children
             if ($include_children) {
-                return intval($current_cat->parent) === $cat_id;
+                return absint($current_cat->parent) === $cat_id;
             }
         }
 
@@ -230,7 +232,7 @@ class WVD_Visibility_Frontend {
                 return false;
             }
 
-            $post_categories = array_map('intval', $post_categories);
+            $post_categories = array_map('absint', $post_categories);
             if (in_array($cat_id, $post_categories, true)) {
                 return true;
             }
@@ -239,7 +241,7 @@ class WVD_Visibility_Frontend {
             if ($include_children || $include_descendants) {
                 foreach ($post_categories as $post_cat_id) {
                     $ancestors = get_ancestors($post_cat_id, 'category');
-                    $ancestors = array_map('intval', $ancestors);
+                    $ancestors = array_map('absint', $ancestors);
 
                     if ($include_descendants && in_array($cat_id, $ancestors, true)) {
                         return true;
@@ -248,7 +250,7 @@ class WVD_Visibility_Frontend {
                     if ($include_children) {
                         $cat = get_category($post_cat_id);
                         // Security: Check for WP_Error and ensure object validity
-                        if ($cat && !is_wp_error($cat) && intval($cat->parent) === $cat_id) {
+                        if ($cat && !is_wp_error($cat) && absint($cat->parent) === $cat_id) {
                             return true;
                         }
                     }
@@ -263,6 +265,10 @@ class WVD_Visibility_Frontend {
      * Evaluate post type rule
      */
     private function evaluate_post_type_rule($post_type) {
+        if (!is_string($post_type) || $post_type === '' || !post_type_exists($post_type)) {
+            return false;
+        }
+
         if (is_singular($post_type)) {
             return true;
         }
@@ -284,11 +290,6 @@ class WVD_Visibility_Frontend {
 
         $term_id = absint($term_id);
         if ($term_id <= 0) {
-            return false;
-        }
-
-        $term = get_term($term_id, $taxonomy);
-        if (!($term instanceof WP_Term) || is_wp_error($term)) {
             return false;
         }
 

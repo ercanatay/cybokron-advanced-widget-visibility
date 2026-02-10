@@ -86,23 +86,11 @@ final class Widget_Visibility_Descendants {
      * @since 1.0.0
      */
     private function init_hooks() {
-        // Load translations
-        add_action('plugins_loaded', array($this, 'load_textdomain'));
-
         // Initialize data handling hooks (must also run for REST widget updates).
         new WVD_Visibility_Admin();
 
         // Initialize frontend
         new WVD_Visibility_Frontend();
-    }
-
-    /**
-     * Load plugin textdomain for translations
-     *
-     * @since 1.0.0
-     */
-    public function load_textdomain() {
-        // Translations are automatically loaded by WordPress 4.6+ for plugins hosted on WordPress.org
     }
 }
 
@@ -125,8 +113,7 @@ add_action('plugins_loaded', 'wvd_init');
  * @since 1.0.0
  */
 register_activation_hook(__FILE__, function() {
-    // Flush rewrite rules if needed
-    flush_rewrite_rules();
+    // No custom post types or rewrite rules to flush.
 });
 
 /**
@@ -135,5 +122,5 @@ register_activation_hook(__FILE__, function() {
  * @since 1.0.0
  */
 register_deactivation_hook(__FILE__, function() {
-    flush_rewrite_rules();
+    // No custom post types or rewrite rules to flush.
 });

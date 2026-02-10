@@ -103,6 +103,14 @@ class WVD_Visibility_Admin {
             'hierarchical' => true,
         ]);
 
+        // Build a set of parent IDs from the fetched pages to avoid N+1 queries.
+        $parent_ids = [];
+        foreach ($pages as $page) {
+            if ($page->post_parent > 0) {
+                $parent_ids[$page->post_parent] = true;
+            }
+        }
+
         $options = [];
         foreach ($pages as $page) {
             $depth = count(get_post_ancestors($page->ID));
@@ -113,7 +121,7 @@ class WVD_Visibility_Admin {
                 'id' => $page->ID,
                 'title' => $prefix . $title,
                 'parent' => $page->post_parent,
-                'hasChildren' => (bool) get_children(['post_parent' => $page->ID, 'post_type' => 'page', 'numberposts' => 1]),
+                'hasChildren' => isset($parent_ids[$page->ID]),
             ];
         }
 
@@ -129,14 +137,26 @@ class WVD_Visibility_Admin {
             'hierarchical' => true,
         ]);
 
+        // Build lookup maps to avoid N+1 queries and per-category parent walks.
+        $cat_by_id = [];
+        $parent_ids = [];
+        foreach ($categories as $cat) {
+            $cat_by_id[$cat->term_id] = $cat;
+            if ($cat->parent > 0) {
+                $parent_ids[$cat->parent] = true;
+            }
+        }
+
         $options = [];
         foreach ($categories as $cat) {
+            // Calculate depth via lookup map with a guard against circular references.
             $depth = 0;
             $parent = $cat->parent;
-            while ($parent > 0) {
+            $seen = [];
+            while ($parent > 0 && isset($cat_by_id[$parent]) && !isset($seen[$parent])) {
+                $seen[$parent] = true;
                 $depth++;
-                $parent_cat = get_category($parent);
-                $parent = $parent_cat ? $parent_cat->parent : 0;
+                $parent = $cat_by_id[$parent]->parent;
             }
             $prefix = str_repeat('— ', $depth);
             // Sanitize category names before localizing to JS to prevent XSS.
@@ -145,7 +165,7 @@ class WVD_Visibility_Admin {
                 'id' => $cat->term_id,
                 'title' => $prefix . $name,
                 'parent' => $cat->parent,
-                'hasChildren' => (bool) get_categories(['parent' => $cat->term_id, 'hide_empty' => false, 'number' => 1]),
+                'hasChildren' => isset($parent_ids[$cat->term_id]),
             ];
         }
 
