@@ -34,7 +34,7 @@ class WVD_Visibility_Frontend {
      */
     public function filter_widget_display($instance, $widget, $args) {
         // No instance or no visibility rules
-        if (!$instance || empty($instance['wvd_visibility']['rules'])) {
+        if (!is_array($instance) || empty($instance['wvd_visibility']['rules'])) {
             return $instance;
         }
 
