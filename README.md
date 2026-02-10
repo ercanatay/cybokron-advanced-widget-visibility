@@ -4,7 +4,7 @@
 **Tags:** widget, visibility, descendants, grandchildren, pages
 **Requires at least:** 5.2
 **Tested up to:** 6.9
-**Stable tag:** 1.4.1
+**Stable tag:** 1.4.2
 **Requires PHP:** 7.4
 **License:** GPLv2 or later
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
@@ -44,7 +44,6 @@ This plugin adds an **"Include all descendants"** option that includes ALL level
 - 👥 **User role targeting** (any selected role)
 - 👤 **User state**: Logged in / Logged out
 - 🔗 **Multiple conditions** with AND/OR logic
-- 🔄 **GitHub auto updates** with stable/beta channels
 - 🚀 **Jetpack-free** - no dependencies
 - 🌍 **30 languages included**
 - 🔒 **Secure** - follows WordPress coding standards
@@ -114,17 +113,6 @@ git clone https://github.com/ercanatay/widget-visibility-descendants.git
 | Logged In | User is logged in |
 | Logged Out | User is not logged in |
 
-### GitHub Auto Update Channel
-
-1. Go to **Settings → Widget Visibility Updates**
-2. Enable **GitHub updates**
-3. Choose update channel:
-   - **Stable (recommended):** only non-prerelease GitHub releases
-   - **Beta:** includes prerelease GitHub releases
-4. Save changes
-
-The plugin then uses WordPress native update checks to detect and install newer GitHub versions.
-
 ## Screenshots
 
 ### Visibility Panel
@@ -160,6 +148,11 @@ No. The visibility checks are very lightweight and only run when widgets are bei
 This plugin works with classic widgets. For block-based widget areas, the visibility controls appear in the widget settings.
 
 ## Changelog
+
+### 1.4.2 (2026-02-10)
+- Compliance: Removed custom GitHub updater integration to satisfy WordPress.org plugin directory rules.
+- Compliance: Removed `Update URI` header and updater hooks that modified plugin update transients.
+- Maintenance: Removed updater settings/admin page and related updater classes.
 
 ### 1.4.1 (2026-02-09)
 - Security: Ensured widget visibility sanitization is always initialized for REST widget updates, preventing `is_admin()` context bypasses.
