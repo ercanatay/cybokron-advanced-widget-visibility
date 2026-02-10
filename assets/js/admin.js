@@ -99,6 +99,7 @@
         html += '<button type="button" class="button wvd-done-button">' + escapeHtml(wvdData.i18n.done) + '</button>';
         html += '</div>';
 
+        $content.off('.wvd');
         $content.html(html);
 
         // Bind events
@@ -305,12 +306,12 @@
         var $panel = $wrapper.find('.wvd-visibility-panel');
 
         // Action change
-        $content.on('change', '.wvd-action-select', function() {
+        $content.on('change.wvd', '.wvd-action-select', function() {
             updateData($content, $dataInput);
         });
 
         // Rule type change
-        $content.on('change', '.wvd-rule-type', function() {
+        $content.on('change.wvd', '.wvd-rule-type', function() {
             var $rule = $(this).closest('.wvd-rule');
             var type = $(this).val();
             var defaultRule = getDefaultRule(type);
@@ -336,7 +337,7 @@
         });
 
         // Taxonomy selector change
-        $content.on('change', '.wvd-rule-taxonomy', function() {
+        $content.on('change.wvd', '.wvd-rule-taxonomy', function() {
             var $taxonomySelect = $(this);
             var taxonomy = $taxonomySelect.val() || '';
             var $taxonomyControl = $taxonomySelect.closest('.wvd-taxonomy-control');
@@ -345,12 +346,12 @@
         });
 
         // Value changes
-        $content.on('change', '.wvd-rule-value, .wvd-rule-values', function() {
+        $content.on('change.wvd', '.wvd-rule-value, .wvd-rule-values', function() {
             updateData($content, $dataInput);
         });
 
         // Checkbox changes
-        $content.on('change', '.wvd-include-children, .wvd-include-descendants', function() {
+        $content.on('change.wvd', '.wvd-include-children, .wvd-include-descendants', function() {
             var $this = $(this);
             var $rule = $this.closest('.wvd-rule');
 
@@ -368,12 +369,12 @@
         });
 
         // Match all change
-        $content.on('change', '.wvd-match-all-checkbox', function() {
+        $content.on('change.wvd', '.wvd-match-all-checkbox', function() {
             updateData($content, $dataInput);
         });
 
         // Add rule
-        $content.on('click', '.wvd-add-rule', function() {
+        $content.on('click.wvd', '.wvd-add-rule', function() {
             var $rules = $content.find('.wvd-rules');
             var index = $rules.find('.wvd-rule').length;
             $rules.append(renderRule(getDefaultRule('page'), index));
@@ -381,20 +382,20 @@
         });
 
         // Remove rule
-        $content.on('click', '.wvd-rule-remove', function() {
+        $content.on('click.wvd', '.wvd-rule-remove', function() {
             $(this).closest('.wvd-rule').remove();
             updateData($content, $dataInput);
         });
 
         // Delete all rules
-        $content.on('click', '.wvd-delete-rules', function() {
+        $content.on('click.wvd', '.wvd-delete-rules', function() {
             $content.find('.wvd-rules').empty();
             updateData($content, $dataInput);
             updateStatus($wrapper, false);
         });
 
         // Done button
-        $content.on('click', '.wvd-done-button', function(e) {
+        $content.on('click.wvd', '.wvd-done-button', function(e) {
             e.preventDefault();
             $panel.slideUp(200);
             var data = getVisibilityData($dataInput);
