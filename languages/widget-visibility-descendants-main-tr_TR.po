@@ -3,11 +3,11 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Widget Visibility with Descendants 1.0.0\n"
+"Project-Id-Version: Widget Visibility with Descendants 2.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ercanatay/widget-visibility-"
 "descendants/issues\n"
-"POT-Creation-Date: 2026-02-09 00:00:00+00:00\n"
-"PO-Revision-Date: 2025-01-27 00:00:00+00:00\n"
+"POT-Creation-Date: 2026-02-10 00:00:00+00:00\n"
+"PO-Revision-Date: 2026-02-10 00:00:00+00:00\n"
 "Last-Translator: Ercan ATAY\n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
@@ -144,54 +144,178 @@ msgstr "Kategori seçin..."
 msgid "Configured"
 msgstr "Yapılandırıldı"
 
-#: includes/class-updater-settings.php
-msgid "Widget Visibility Updates"
-msgstr "Widget Görünürlük Güncellemeleri"
+#: includes/class-visibility-admin.php
+msgid "Tag"
+msgstr "Etiket"
 
-#: includes/class-updater-settings.php
-msgid "Update Settings"
-msgstr "Güncelleme Ayarları"
+#: includes/class-visibility-admin.php
+msgid "Author"
+msgstr "Yazar"
 
-#: includes/class-updater-settings.php
-msgid "Installed version: %s"
-msgstr "Kurulu sürüm: %s"
+#: includes/class-visibility-admin.php
+msgid "Schedule"
+msgstr "Zamanlama"
 
-#: includes/class-updater-settings.php
-msgid "Enable GitHub updates"
-msgstr "GitHub güncellemelerini etkinleştir"
+#: includes/class-visibility-admin.php
+msgid "URL Parameter"
+msgstr "URL Parametresi"
 
-#: includes/class-updater-settings.php
-msgid "Check GitHub releases and deliver updates through WordPress updater."
-msgstr "GitHub sürümlerini kontrol et ve güncellemeleri WordPress güncelleyicisi üzerinden sun."
+#: includes/class-visibility-admin.php
+msgid "Device"
+msgstr "Cihaz"
 
-#: includes/class-updater-settings.php
-msgid "Update channel"
-msgstr "Güncelleme kanalı"
+#: includes/class-visibility-admin.php
+msgid "Select a tag..."
+msgstr "Bir etiket seçin..."
 
-#: includes/class-updater-settings.php
-msgid "Stable (recommended)"
-msgstr "Kararlı (önerilen)"
+#: includes/class-visibility-admin.php
+msgid "Select an author..."
+msgstr "Bir yazar seçin..."
 
-#: includes/class-updater-settings.php
-msgid "Beta (includes prereleases)"
-msgstr "Beta (ön sürümler dahil)"
+#: includes/class-visibility-admin.php
+msgid "Select device..."
+msgstr "Cihaz seçin..."
 
-#: includes/class-updater-settings.php
-msgid "Choose which GitHub releases are eligible for updates."
-msgstr "Güncelleme için uygun GitHub sürümlerini seçin."
+#: includes/class-visibility-admin.php
+msgid "Start date"
+msgstr "Başlangıç tarihi"
 
-#: includes/class-github-updater.php
-msgid "No release notes available."
-msgstr "Yayın notu yok."
+#: includes/class-visibility-admin.php
+msgid "End date"
+msgstr "Bitiş tarihi"
 
-#: includes/class-github-updater.php
-msgid ""
-"Control widget visibility based on pages, posts, categories with full "
-"descendant support."
-msgstr ""
-"Bileşen görünürlüğünü sayfa, yazı ve kategorilere göre tüm alt düzey "
-"desteğiyle kontrol edin."
+#: includes/class-visibility-admin.php
+msgid "Parameter name"
+msgstr "Parametre adı"
 
-#: includes/class-github-updater.php
-msgid "Could not prepare the GitHub update package for installation."
-msgstr "GitHub güncelleme paketi kurulum için hazırlanamadı."
+#: includes/class-visibility-admin.php
+msgid "Parameter value"
+msgstr "Parametre değeri"
+
+#: includes/class-visibility-admin.php
+msgid "Mobile"
+msgstr "Mobil"
+
+#: includes/class-visibility-admin.php
+msgid "Desktop"
+msgstr "Masaüstü"
+
+#: includes/class-visibility-admin.php
+msgid "WooCommerce: Shop"
+msgstr "WooCommerce: Mağaza"
+
+#: includes/class-visibility-admin.php
+msgid "WooCommerce: Cart"
+msgstr "WooCommerce: Sepet"
+
+#: includes/class-visibility-admin.php
+msgid "WooCommerce: Checkout"
+msgstr "WooCommerce: Ödeme"
+
+#: includes/class-visibility-admin.php
+msgid "WooCommerce: My Account"
+msgstr "WooCommerce: Hesabım"
+
+#: includes/class-visibility-admin.php
+msgid "WooCommerce: Product Category"
+msgstr "WooCommerce: Ürün Kategorisi"
+
+#: includes/class-visibility-admin.php
+msgid "Select a product category..."
+msgstr "Bir ürün kategorisi seçin..."
+
+#: includes/class-visibility-admin.php
+msgid "Presets"
+msgstr "Şablonlar"
+
+#: includes/class-visibility-admin.php
+msgid "Save as Preset"
+msgstr "Şablon Olarak Kaydet"
+
+#: includes/class-visibility-admin.php
+msgid "Load Preset"
+msgstr "Şablon Yükle"
+
+#: includes/class-visibility-admin.php
+msgid "Preset name"
+msgstr "Şablon adı"
+
+#: includes/class-visibility-admin.php
+msgid "Delete Preset"
+msgstr "Şablonu Sil"
+
+#: includes/class-visibility-admin.php
+msgid "No presets saved"
+msgstr "Kayıtlı şablon yok"
+
+#: includes/class-visibility-admin.php
+msgid "Preset saved!"
+msgstr "Şablon kaydedildi!"
+
+#: includes/class-visibility-admin.php
+msgid "Preset deleted!"
+msgstr "Şablon silindi!"
+
+#: includes/class-visibility-admin.php
+msgid "Enter preset name:"
+msgstr "Şablon adı girin:"
+
+#: includes/class-visibility-admin.php
+msgid "Import/Export"
+msgstr "İçe/Dışa Aktar"
+
+#: includes/class-visibility-admin.php
+msgid "Widget Visibility Import/Export"
+msgstr "Widget Görünürlük İçe/Dışa Aktarma"
+
+#: includes/class-visibility-admin.php
+msgid "Widget Visibility"
+msgstr "Widget Görünürlük"
+
+#: includes/class-visibility-admin.php
+msgid "Export"
+msgstr "Dışa Aktar"
+
+#: includes/class-visibility-admin.php
+msgid "Import"
+msgstr "İçe Aktar"
+
+#: includes/class-visibility-admin.php
+msgid "Download all widget visibility rules as a JSON file."
+msgstr "Tüm widget görünürlük kurallarını JSON dosyası olarak indirin."
+
+#: includes/class-visibility-admin.php
+msgid "Upload a JSON file to import widget visibility rules."
+msgstr "Widget görünürlük kurallarını içe aktarmak için bir JSON dosyası yükleyin."
+
+#: includes/class-visibility-admin.php
+msgid "Export Rules"
+msgstr "Kuralları Dışa Aktar"
+
+#: includes/class-visibility-admin.php
+msgid "Import Rules"
+msgstr "Kuralları İçe Aktar"
+
+#: includes/class-visibility-admin.php
+msgid "Successfully imported visibility rules for %d widget(s)."
+msgstr "%d widget için görünürlük kuralları başarıyla içe aktarıldı."
+
+#: includes/class-visibility-admin.php
+msgid "Widget Visibility Debug (%d widgets)"
+msgstr "Widget Görünürlük Hata Ayıklama (%d widget)"
+
+#: includes/class-visibility-admin.php
+msgid "No widgets processed on this page."
+msgstr "Bu sayfada işlenen widget yok."
+
+#: includes/class-visibility-admin.php
+msgid "No visibility rules"
+msgstr "Görünürlük kuralı yok"
+
+#: includes/class-visibility-admin.php
+msgid "AND"
+msgstr "VE"
+
+#: includes/class-visibility-admin.php
+msgid "OR"
+msgstr "VEYA"

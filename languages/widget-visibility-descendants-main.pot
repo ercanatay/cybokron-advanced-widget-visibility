@@ -2,13 +2,13 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Widget Visibility with Descendants 1.4.1\n"
+"Project-Id-Version: Widget Visibility with Descendants 2.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ercanatay/widget-visibility-descendants/issues\n"
-"POT-Creation-Date: 2026-02-09 00:00:00+00:00\n"
+"POT-Creation-Date: 2026-02-10 00:00:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2026-02-09 00:00:00+00:00\n"
+"PO-Revision-Date: 2026-02-10 00:00:00+00:00\n"
 "Last-Translator: Ercan ATAY\n"
 "Language-Team: Ercan ATAY\n"
 
@@ -140,50 +140,178 @@ msgstr ""
 msgid "Configured"
 msgstr ""
 
-#: includes/class-updater-settings.php
-msgid "Widget Visibility Updates"
+#: includes/class-visibility-admin.php
+msgid "Tag"
 msgstr ""
 
-#: includes/class-updater-settings.php
-msgid "Update Settings"
+#: includes/class-visibility-admin.php
+msgid "Author"
 msgstr ""
 
-#: includes/class-updater-settings.php
-msgid "Installed version: %s"
+#: includes/class-visibility-admin.php
+msgid "Schedule"
 msgstr ""
 
-#: includes/class-updater-settings.php
-msgid "Enable GitHub updates"
+#: includes/class-visibility-admin.php
+msgid "URL Parameter"
 msgstr ""
 
-#: includes/class-updater-settings.php
-msgid "Check GitHub releases and deliver updates through WordPress updater."
+#: includes/class-visibility-admin.php
+msgid "Device"
 msgstr ""
 
-#: includes/class-updater-settings.php
-msgid "Update channel"
+#: includes/class-visibility-admin.php
+msgid "Select a tag..."
 msgstr ""
 
-#: includes/class-updater-settings.php
-msgid "Stable (recommended)"
+#: includes/class-visibility-admin.php
+msgid "Select an author..."
 msgstr ""
 
-#: includes/class-updater-settings.php
-msgid "Beta (includes prereleases)"
+#: includes/class-visibility-admin.php
+msgid "Select device..."
 msgstr ""
 
-#: includes/class-updater-settings.php
-msgid "Choose which GitHub releases are eligible for updates."
+#: includes/class-visibility-admin.php
+msgid "Start date"
 msgstr ""
 
-#: includes/class-github-updater.php
-msgid "No release notes available."
+#: includes/class-visibility-admin.php
+msgid "End date"
 msgstr ""
 
-#: includes/class-github-updater.php
-msgid "Control widget visibility based on pages, posts, categories with full descendant support."
+#: includes/class-visibility-admin.php
+msgid "Parameter name"
 msgstr ""
 
-#: includes/class-github-updater.php
-msgid "Could not prepare the GitHub update package for installation."
+#: includes/class-visibility-admin.php
+msgid "Parameter value"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Mobile"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Desktop"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "WooCommerce: Shop"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "WooCommerce: Cart"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "WooCommerce: Checkout"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "WooCommerce: My Account"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "WooCommerce: Product Category"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Select a product category..."
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Presets"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Save as Preset"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Load Preset"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Preset name"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Delete Preset"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "No presets saved"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Preset saved!"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Preset deleted!"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Enter preset name:"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Import/Export"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Widget Visibility Import/Export"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Widget Visibility"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Export"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Import"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Download all widget visibility rules as a JSON file."
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Upload a JSON file to import widget visibility rules."
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Export Rules"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Import Rules"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Successfully imported visibility rules for %d widget(s)."
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "Widget Visibility Debug (%d widgets)"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "No widgets processed on this page."
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "No visibility rules"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "AND"
+msgstr ""
+
+#: includes/class-visibility-admin.php
+msgid "OR"
 msgstr ""

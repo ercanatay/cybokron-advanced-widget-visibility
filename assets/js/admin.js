@@ -5,19 +5,14 @@
 (function($) {
     'use strict';
 
-    // Initialize when document is ready
     $(document).ready(function() {
         initVisibilityUI();
     });
 
-    // Re-initialize when widgets are updated (AJAX)
     $(document).on('widget-updated widget-added', function(event, widget) {
         initVisibilityUI(widget);
     });
 
-    /**
-     * Initialize visibility UI for all widgets or a specific widget
-     */
     function initVisibilityUI(container) {
         var $wrappers = container
             ? $(container).find('.wvd-visibility-wrapper')
@@ -25,27 +20,20 @@
 
         $wrappers.each(function() {
             var $wrapper = $(this);
-
-            // Skip if already initialized
             if ($wrapper.data('wvd-initialized')) {
                 return;
             }
-
             $wrapper.data('wvd-initialized', true);
             setupWidget($wrapper);
         });
     }
 
-    /**
-     * Setup a single widget's visibility UI
-     */
     function setupWidget($wrapper) {
         var $button = $wrapper.find('.wvd-visibility-button');
         var $panel = $wrapper.find('.wvd-visibility-panel');
         var $dataInput = $wrapper.find('.wvd-visibility-data');
         var $content = $wrapper.find('.wvd-visibility-content');
 
-        // Toggle panel
         $button.on('click', function(e) {
             e.preventDefault();
             if ($panel.is(':visible')) {
@@ -57,23 +45,20 @@
         });
     }
 
-    /**
-     * Render the visibility panel content
-     */
     function renderPanel($content, $dataInput) {
         var data = getVisibilityData($dataInput);
         var html = '';
 
-        // Action row (Show/Hide)
+        // Action row
         html += '<div class="wvd-action-row">';
         html += '<select class="wvd-action-select">';
         html += '<option value="show"' + (data.action === 'show' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.show) + '</option>';
         html += '<option value="hide"' + (data.action === 'hide' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.hide) + '</option>';
         html += '</select>';
-        html += '<span class="wvd-rule-label">' + escapeHtml(wvdData.i18n.if) + ':</span>';
+        html += '<span class="wvd-rule-label">' + escapeHtml(wvdData.i18n['if']) + ':</span>';
         html += '</div>';
 
-        // Rules container
+        // Rules
         html += '<div class="wvd-rules">';
         if (data.rules && data.rules.length > 0) {
             data.rules.forEach(function(rule, index) {
@@ -82,10 +67,10 @@
         }
         html += '</div>';
 
-        // Add condition button
+        // Add condition
         html += '<button type="button" class="wvd-add-rule">' + escapeHtml(wvdData.i18n.addCondition) + '</button>';
 
-        // Match all checkbox
+        // Match all
         html += '<div class="wvd-match-all">';
         html += '<label>';
         html += '<input type="checkbox" class="wvd-match-all-checkbox"' + (data.match_all ? ' checked' : '') + '>';
@@ -93,22 +78,31 @@
         html += '</label>';
         html += '</div>';
 
+        // Presets section
+        html += '<div class="wvd-presets-section">';
+        html += '<button type="button" class="wvd-save-preset">' + escapeHtml(wvdData.i18n.savePreset) + '</button>';
+        html += '<button type="button" class="wvd-load-preset">' + escapeHtml(wvdData.i18n.loadPreset) + '</button>';
+        html += '<div class="wvd-preset-list" style="display:none;"></div>';
+        html += '</div>';
+
         // Footer
         html += '<div class="wvd-panel-footer">';
-        html += '<button type="button" class="wvd-delete-rules">' + escapeHtml(wvdData.i18n.delete) + '</button>';
+        html += '<button type="button" class="wvd-delete-rules">' + escapeHtml(wvdData.i18n['delete']) + '</button>';
         html += '<button type="button" class="button wvd-done-button">' + escapeHtml(wvdData.i18n.done) + '</button>';
         html += '</div>';
 
         $content.off('.wvd');
         $content.html(html);
-
-        // Bind events
         bindPanelEvents($content, $dataInput);
+
+        // Init datepickers
+        $content.find('.wvd-datepicker').datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true
+        });
     }
 
-    /**
-     * Render a single rule
-     */
     function renderRule(rule, index) {
         var normalizedRule = normalizeRule(rule);
         if (!normalizedRule) {
@@ -122,30 +116,45 @@
 
         // Type select
         html += '<select class="wvd-rule-type">';
-        html += '<option value="page"' + (normalizedRule.type === 'page' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.page) + '</option>';
-        html += '<option value="category"' + (normalizedRule.type === 'category' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.category) + '</option>';
-        html += '<option value="post_type"' + (normalizedRule.type === 'post_type' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.postType) + '</option>';
-        html += '<option value="taxonomy"' + (normalizedRule.type === 'taxonomy' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.taxonomy) + '</option>';
-        html += '<option value="user_role"' + (normalizedRule.type === 'user_role' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.userRole) + '</option>';
-        html += '<option value="front_page"' + (normalizedRule.type === 'front_page' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.frontPage) + '</option>';
-        html += '<option value="blog"' + (normalizedRule.type === 'blog' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.blog) + '</option>';
-        html += '<option value="archive"' + (normalizedRule.type === 'archive' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.archive) + '</option>';
-        html += '<option value="search"' + (normalizedRule.type === 'search' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.search) + '</option>';
-        html += '<option value="404"' + (normalizedRule.type === '404' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.notFound) + '</option>';
-        html += '<option value="single"' + (normalizedRule.type === 'single' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.single) + '</option>';
-        html += '<option value="logged_in"' + (normalizedRule.type === 'logged_in' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.loggedIn) + '</option>';
-        html += '<option value="logged_out"' + (normalizedRule.type === 'logged_out' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.loggedOut) + '</option>';
+        html += '<option value="page"' + sel(normalizedRule.type, 'page') + '>' + escapeHtml(wvdData.i18n.page) + '</option>';
+        html += '<option value="category"' + sel(normalizedRule.type, 'category') + '>' + escapeHtml(wvdData.i18n.category) + '</option>';
+        html += '<option value="tag"' + sel(normalizedRule.type, 'tag') + '>' + escapeHtml(wvdData.i18n.tag) + '</option>';
+        html += '<option value="author"' + sel(normalizedRule.type, 'author') + '>' + escapeHtml(wvdData.i18n.author) + '</option>';
+        html += '<option value="post_type"' + sel(normalizedRule.type, 'post_type') + '>' + escapeHtml(wvdData.i18n.postType) + '</option>';
+        html += '<option value="taxonomy"' + sel(normalizedRule.type, 'taxonomy') + '>' + escapeHtml(wvdData.i18n.taxonomy) + '</option>';
+        html += '<option value="user_role"' + sel(normalizedRule.type, 'user_role') + '>' + escapeHtml(wvdData.i18n.userRole) + '</option>';
+        html += '<option value="schedule"' + sel(normalizedRule.type, 'schedule') + '>' + escapeHtml(wvdData.i18n.schedule) + '</option>';
+        html += '<option value="url_param"' + sel(normalizedRule.type, 'url_param') + '>' + escapeHtml(wvdData.i18n.urlParam) + '</option>';
+        html += '<option value="device"' + sel(normalizedRule.type, 'device') + '>' + escapeHtml(wvdData.i18n.device) + '</option>';
+        html += '<option value="front_page"' + sel(normalizedRule.type, 'front_page') + '>' + escapeHtml(wvdData.i18n.frontPage) + '</option>';
+        html += '<option value="blog"' + sel(normalizedRule.type, 'blog') + '>' + escapeHtml(wvdData.i18n.blog) + '</option>';
+        html += '<option value="archive"' + sel(normalizedRule.type, 'archive') + '>' + escapeHtml(wvdData.i18n.archive) + '</option>';
+        html += '<option value="search"' + sel(normalizedRule.type, 'search') + '>' + escapeHtml(wvdData.i18n.search) + '</option>';
+        html += '<option value="404"' + sel(normalizedRule.type, '404') + '>' + escapeHtml(wvdData.i18n.notFound) + '</option>';
+        html += '<option value="single"' + sel(normalizedRule.type, 'single') + '>' + escapeHtml(wvdData.i18n.single) + '</option>';
+        html += '<option value="logged_in"' + sel(normalizedRule.type, 'logged_in') + '>' + escapeHtml(wvdData.i18n.loggedIn) + '</option>';
+        html += '<option value="logged_out"' + sel(normalizedRule.type, 'logged_out') + '>' + escapeHtml(wvdData.i18n.loggedOut) + '</option>';
+
+        // WooCommerce options
+        if (wvdData.hasWooCommerce) {
+            html += '<option value="woo_shop"' + sel(normalizedRule.type, 'woo_shop') + '>' + escapeHtml(wvdData.i18n.wooShop) + '</option>';
+            html += '<option value="woo_cart"' + sel(normalizedRule.type, 'woo_cart') + '>' + escapeHtml(wvdData.i18n.wooCart) + '</option>';
+            html += '<option value="woo_checkout"' + sel(normalizedRule.type, 'woo_checkout') + '>' + escapeHtml(wvdData.i18n.wooCheckout) + '</option>';
+            html += '<option value="woo_account"' + sel(normalizedRule.type, 'woo_account') + '>' + escapeHtml(wvdData.i18n.wooAccount) + '</option>';
+            html += '<option value="woo_product_cat"' + sel(normalizedRule.type, 'woo_product_cat') + '>' + escapeHtml(wvdData.i18n.wooProductCat) + '</option>';
+        }
+
         html += '</select>';
 
         // Label
         html += '<span class="wvd-rule-label">' + escapeHtml(wvdData.i18n.is) + '</span>';
 
-        // Value control (depends on type)
+        // Value control
         html += '<span class="wvd-rule-value-container">';
         html += renderValueControl(normalizedRule);
         html += '</span>';
 
-        // Options (checkboxes)
+        // Options
         if (ruleSupportsHierarchyOptions(normalizedRule.type)) {
             html += renderRuleOptions(normalizedRule);
         }
@@ -154,12 +163,8 @@
         return html;
     }
 
-    /**
-     * Render value control based on rule type
-     */
     function renderValueControl(rule) {
-        var items = [];
-        var placeholder = '';
+        var items, placeholder;
 
         switch (rule.type) {
             case 'page':
@@ -170,6 +175,16 @@
             case 'category':
                 items = Array.isArray(wvdData.categories) ? wvdData.categories : [];
                 placeholder = escapeHtml(wvdData.i18n.selectCategory);
+                return renderSingleValueSelect(items, placeholder, rule.value);
+
+            case 'tag':
+                items = Array.isArray(wvdData.tags) ? wvdData.tags : [];
+                placeholder = escapeHtml(wvdData.i18n.selectTag);
+                return renderSingleValueSelect(items, placeholder, rule.value);
+
+            case 'author':
+                items = Array.isArray(wvdData.authors) ? wvdData.authors : [];
+                placeholder = escapeHtml(wvdData.i18n.selectAuthor);
                 return renderSingleValueSelect(items, placeholder, rule.value);
 
             case 'post_type':
@@ -183,18 +198,28 @@
             case 'user_role':
                 return renderRoleValueControl(rule);
 
+            case 'schedule':
+                return renderScheduleControl(rule);
+
+            case 'url_param':
+                return renderUrlParamControl(rule);
+
+            case 'device':
+                return renderDeviceControl(rule);
+
+            case 'woo_product_cat':
+                items = (wvdData.wooProductCategories && Array.isArray(wvdData.wooProductCategories)) ? wvdData.wooProductCategories : [];
+                placeholder = escapeHtml(wvdData.i18n.selectWooCategory);
+                return renderSingleValueSelect(items, placeholder, rule.value);
+
             default:
-                return '<span class="wvd-rule-value-na">—</span>';
+                return '<span class="wvd-rule-value-na">&mdash;</span>';
         }
     }
 
-    /**
-     * Render single-select value control
-     */
     function renderSingleValueSelect(items, placeholder, selectedValue) {
         var html = '<select class="wvd-rule-value">';
         html += '<option value="">' + placeholder + '</option>';
-
         items.forEach(function(item) {
             var selected = (String(selectedValue) === String(item.id)) ? ' selected' : '';
             var hasChildren = item.hasChildren ? '1' : '0';
@@ -202,20 +227,15 @@
             html += escapeHtml(item.title);
             html += '</option>';
         });
-
         html += '</select>';
         return html;
     }
 
-    /**
-     * Render taxonomy selector + term selector.
-     */
     function renderTaxonomyValueControl(rule) {
         var taxonomies = Array.isArray(wvdData.taxonomies) ? wvdData.taxonomies : [];
         var selectedTaxonomy = (typeof rule.taxonomy === 'string') ? rule.taxonomy : '';
         var selectedTerm = rule.value || '';
         var html = '<span class="wvd-taxonomy-control">';
-
         html += '<select class="wvd-rule-taxonomy">';
         html += '<option value="">' + escapeHtml(wvdData.i18n.selectTaxonomy) + '</option>';
         taxonomies.forEach(function(taxonomy) {
@@ -225,22 +245,16 @@
             html += '</option>';
         });
         html += '</select>';
-
         html += renderTaxonomyTermSelect(selectedTaxonomy, selectedTerm);
         html += '</span>';
-
         return html;
     }
 
-    /**
-     * Render term selector for selected taxonomy.
-     */
     function renderTaxonomyTermSelect(taxonomy, selectedTerm) {
         var termsMap = (wvdData && wvdData.taxonomyTerms) ? wvdData.taxonomyTerms : {};
         var terms = (taxonomy && Array.isArray(termsMap[taxonomy])) ? termsMap[taxonomy] : [];
         var html = '<select class="wvd-rule-value">';
         html += '<option value="">' + escapeHtml(wvdData.i18n.selectTerm) + '</option>';
-
         terms.forEach(function(term) {
             var selected = (String(selectedTerm) === String(term.id)) ? ' selected' : '';
             var hasChildren = term.hasChildren ? '1' : '0';
@@ -248,80 +262,99 @@
             html += escapeHtml(term.title);
             html += '</option>';
         });
-
         html += '</select>';
         return html;
     }
 
-    /**
-     * Render multi-role selector.
-     */
     function renderRoleValueControl(rule) {
         var roles = Array.isArray(wvdData.roles) ? wvdData.roles : [];
         var selectedRoles = Array.isArray(rule.values) ? rule.values.map(String) : [];
         var html = '<select class="wvd-rule-values" multiple="multiple" size="4">';
-
         if (roles.length === 0) {
             html += '<option value="" disabled="disabled">' + escapeHtml(wvdData.i18n.selectRoles) + '</option>';
         }
-
         roles.forEach(function(role) {
             var selected = selectedRoles.indexOf(String(role.id)) !== -1 ? ' selected' : '';
             html += '<option value="' + escapeHtml(role.id) + '"' + selected + '>';
             html += escapeHtml(role.title);
             html += '</option>';
         });
-
         html += '</select>';
         return html;
     }
 
-    /**
-     * Render rule options (checkboxes)
-     */
+    function renderScheduleControl(rule) {
+        var startDate = rule.start_date || '';
+        var endDate = rule.end_date || '';
+        var html = '<span class="wvd-schedule-control">';
+        html += '<label class="wvd-schedule-label">' + escapeHtml(wvdData.i18n.startDate) + '</label>';
+        html += '<input type="text" class="wvd-datepicker wvd-schedule-start" value="' + escapeHtml(startDate) + '" placeholder="YYYY-MM-DD" autocomplete="off">';
+        html += '<label class="wvd-schedule-label">' + escapeHtml(wvdData.i18n.endDate) + '</label>';
+        html += '<input type="text" class="wvd-datepicker wvd-schedule-end" value="' + escapeHtml(endDate) + '" placeholder="YYYY-MM-DD" autocomplete="off">';
+        html += '</span>';
+        return html;
+    }
+
+    function renderUrlParamControl(rule) {
+        var paramName = rule.param_name || '';
+        var paramValue = rule.param_value || '';
+        var html = '<span class="wvd-url-param-control">';
+        html += '<input type="text" class="wvd-param-name" value="' + escapeHtml(paramName) + '" placeholder="' + escapeHtml(wvdData.i18n.paramName) + '">';
+        html += '<span class="wvd-rule-label">=</span>';
+        html += '<input type="text" class="wvd-param-value" value="' + escapeHtml(paramValue) + '" placeholder="' + escapeHtml(wvdData.i18n.paramValue) + '">';
+        html += '</span>';
+        return html;
+    }
+
+    function renderDeviceControl(rule) {
+        var html = '<select class="wvd-rule-value">';
+        html += '<option value="">' + escapeHtml(wvdData.i18n.selectDevice) + '</option>';
+        html += '<option value="mobile"' + sel(rule.value, 'mobile') + '>' + escapeHtml(wvdData.i18n.mobile) + '</option>';
+        html += '<option value="desktop"' + sel(rule.value, 'desktop') + '>' + escapeHtml(wvdData.i18n.desktop) + '</option>';
+        html += '</select>';
+        return html;
+    }
+
     function renderRuleOptions(rule) {
         var html = '<div class="wvd-rule-options">';
-
-        // Include children
         html += '<label>';
         html += '<input type="checkbox" class="wvd-include-children"' + (rule.include_children ? ' checked' : '') + '>';
         html += ' ' + escapeHtml(wvdData.i18n.includeChildren);
         html += '</label>';
-
-        // Include all descendants
         html += '<label class="wvd-descendants-option">';
         html += '<input type="checkbox" class="wvd-include-descendants"' + (rule.include_descendants ? ' checked' : '') + '>';
         html += ' ' + escapeHtml(wvdData.i18n.includeDescendants);
         html += '</label>';
-
         html += '</div>';
         return html;
     }
 
-    /**
-     * Bind events to panel elements
-     */
     function bindPanelEvents($content, $dataInput) {
         var $wrapper = $content.closest('.wvd-visibility-wrapper');
         var $panel = $wrapper.find('.wvd-visibility-panel');
 
-        // Action change
         $content.on('change.wvd', '.wvd-action-select', function() {
             updateData($content, $dataInput);
         });
 
-        // Rule type change
         $content.on('change.wvd', '.wvd-rule-type', function() {
             var $rule = $(this).closest('.wvd-rule');
             var type = $(this).val();
             var defaultRule = getDefaultRule(type);
 
-            // Update value control
             $rule.find('.wvd-rule-value-container').replaceWith(
                 '<span class="wvd-rule-value-container">' + renderValueControl(defaultRule) + '</span>'
             );
 
-            // Update options
+            // Init datepickers for schedule
+            if (type === 'schedule') {
+                $rule.find('.wvd-datepicker').datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    changeMonth: true,
+                    changeYear: true
+                });
+            }
+
             var $optionsContainer = $rule.find('.wvd-rule-options');
             if (ruleSupportsHierarchyOptions(type)) {
                 if ($optionsContainer.length === 0) {
@@ -336,7 +369,6 @@
             updateData($content, $dataInput);
         });
 
-        // Taxonomy selector change
         $content.on('change.wvd', '.wvd-rule-taxonomy', function() {
             var $taxonomySelect = $(this);
             var taxonomy = $taxonomySelect.val() || '';
@@ -345,22 +377,22 @@
             updateData($content, $dataInput);
         });
 
-        // Value changes
         $content.on('change.wvd', '.wvd-rule-value, .wvd-rule-values', function() {
             updateData($content, $dataInput);
         });
 
-        // Checkbox changes
+        // Schedule and URL param input changes
+        $content.on('change.wvd input.wvd', '.wvd-schedule-start, .wvd-schedule-end, .wvd-param-name, .wvd-param-value', function() {
+            updateData($content, $dataInput);
+        });
+
         $content.on('change.wvd', '.wvd-include-children, .wvd-include-descendants', function() {
             var $this = $(this);
             var $rule = $this.closest('.wvd-rule');
 
-            // If descendants is checked, also check children
             if ($this.hasClass('wvd-include-descendants') && $this.is(':checked')) {
                 $rule.find('.wvd-include-children').prop('checked', true);
             }
-
-            // If children is unchecked, also uncheck descendants
             if ($this.hasClass('wvd-include-children') && !$this.is(':checked')) {
                 $rule.find('.wvd-include-descendants').prop('checked', false);
             }
@@ -368,12 +400,10 @@
             updateData($content, $dataInput);
         });
 
-        // Match all change
         $content.on('change.wvd', '.wvd-match-all-checkbox', function() {
             updateData($content, $dataInput);
         });
 
-        // Add rule
         $content.on('click.wvd', '.wvd-add-rule', function() {
             var $rules = $content.find('.wvd-rules');
             var index = $rules.find('.wvd-rule').length;
@@ -381,31 +411,91 @@
             updateData($content, $dataInput);
         });
 
-        // Remove rule
         $content.on('click.wvd', '.wvd-rule-remove', function() {
             $(this).closest('.wvd-rule').remove();
             updateData($content, $dataInput);
         });
 
-        // Delete all rules
         $content.on('click.wvd', '.wvd-delete-rules', function() {
             $content.find('.wvd-rules').empty();
             updateData($content, $dataInput);
             updateStatus($wrapper, false);
         });
 
-        // Done button
         $content.on('click.wvd', '.wvd-done-button', function(e) {
             e.preventDefault();
             $panel.slideUp(200);
             var data = getVisibilityData($dataInput);
             updateStatus($wrapper, data.rules && data.rules.length > 0);
         });
+
+        // Preset: Save
+        $content.on('click.wvd', '.wvd-save-preset', function() {
+            var name = prompt(wvdData.i18n.enterPresetName);
+            if (!name || name.trim() === '') return;
+            var data = $dataInput.val();
+            $.post(wvdData.ajaxUrl, {
+                action: 'wvd_save_preset',
+                nonce: wvdData.presetsNonce,
+                preset_name: name.trim(),
+                preset_data: data
+            }, function(response) {
+                if (response.success) {
+                    alert(wvdData.i18n.presetSaved);
+                }
+            });
+        });
+
+        // Preset: Load
+        $content.on('click.wvd', '.wvd-load-preset', function() {
+            var $list = $content.find('.wvd-preset-list');
+            if ($list.is(':visible')) {
+                $list.slideUp(200);
+                return;
+            }
+            $list.html('<em>Loading...</em>').slideDown(200);
+            $.post(wvdData.ajaxUrl, {
+                action: 'wvd_load_presets',
+                nonce: wvdData.presetsNonce
+            }, function(response) {
+                if (!response.success || !response.data.presets.length) {
+                    $list.html('<em>' + escapeHtml(wvdData.i18n.noPresets) + '</em>');
+                    return;
+                }
+                var html = '';
+                response.data.presets.forEach(function(preset) {
+                    html += '<div class="wvd-preset-item">';
+                    html += '<button type="button" class="wvd-preset-apply" data-preset=\'' + escapeHtml(JSON.stringify(preset.data)) + '\'>' + escapeHtml(preset.name) + '</button>';
+                    html += '<button type="button" class="wvd-preset-delete" data-name="' + escapeHtml(preset.name) + '">&times;</button>';
+                    html += '</div>';
+                });
+                $list.html(html);
+            });
+        });
+
+        // Preset: Apply
+        $content.on('click.wvd', '.wvd-preset-apply', function() {
+            var presetData = $(this).attr('data-preset');
+            $dataInput.val(presetData);
+            renderPanel($content, $dataInput);
+        });
+
+        // Preset: Delete
+        $content.on('click.wvd', '.wvd-preset-delete', function() {
+            var name = $(this).data('name');
+            var $item = $(this).closest('.wvd-preset-item');
+            $.post(wvdData.ajaxUrl, {
+                action: 'wvd_delete_preset',
+                nonce: wvdData.presetsNonce,
+                preset_name: name
+            }, function(response) {
+                if (response.success) {
+                    $item.remove();
+                }
+            });
+        });
     }
 
-    /**
-     * Update the hidden data input
-     */
     function updateData($content, $dataInput) {
         var data = {
             action: $content.find('.wvd-action-select').val() || 'show',
@@ -429,9 +519,19 @@
             } else if (type === 'user_role') {
                 var roleValues = $rule.find('.wvd-rule-values').val();
                 roleValues = Array.isArray(roleValues) ? roleValues : [];
-                rule.values = roleValues.filter(function(roleValue) {
-                    return roleValue !== '';
-                });
+                rule.values = roleValues.filter(function(v) { return v !== ''; });
+                rule.value = '';
+                rule.include_children = false;
+                rule.include_descendants = false;
+            } else if (type === 'schedule') {
+                rule.start_date = $rule.find('.wvd-schedule-start').val() || '';
+                rule.end_date = $rule.find('.wvd-schedule-end').val() || '';
+                rule.value = '';
+                rule.include_children = false;
+                rule.include_descendants = false;
+            } else if (type === 'url_param') {
+                rule.param_name = $rule.find('.wvd-param-name').val() || '';
+                rule.param_value = $rule.find('.wvd-param-value').val() || '';
                 rule.value = '';
                 rule.include_children = false;
                 rule.include_descendants = false;
@@ -443,14 +543,9 @@
         });
 
         $dataInput.val(JSON.stringify(data));
-
-        // Trigger change to mark widget as needing save
         $dataInput.trigger('change');
     }
 
-    /**
-     * Get visibility data from input and normalize for rendering.
-     */
     function getVisibilityData($dataInput) {
         var fallback = { action: 'show', match_all: false, rules: [] };
         var val = $dataInput.val();
@@ -486,9 +581,6 @@
         }
     }
 
-    /**
-     * Normalize any stored rule object for UI rendering.
-     */
     function normalizeRule(rule) {
         if (!rule || typeof rule !== 'object') {
             return null;
@@ -514,9 +606,7 @@
 
         if (type === 'user_role') {
             if (Array.isArray(rule.values)) {
-                normalized.values = rule.values.map(function(value) {
-                    return String(value);
-                });
+                normalized.values = rule.values.map(function(v) { return String(v); });
             } else if (typeof rule.value === 'string' && rule.value !== '') {
                 normalized.values = [rule.value];
             } else {
@@ -527,6 +617,16 @@
             normalized.include_descendants = false;
         }
 
+        if (type === 'schedule') {
+            normalized.start_date = (typeof rule.start_date === 'string') ? rule.start_date : '';
+            normalized.end_date = (typeof rule.end_date === 'string') ? rule.end_date : '';
+        }
+
+        if (type === 'url_param') {
+            normalized.param_name = (typeof rule.param_name === 'string') ? rule.param_name : '';
+            normalized.param_value = (typeof rule.param_value === 'string') ? rule.param_value : '';
+        }
+
         if (!ruleSupportsHierarchyOptions(type)) {
             normalized.include_children = false;
             normalized.include_descendants = false;
@@ -535,9 +635,6 @@
         return normalized;
     }
 
-    /**
-     * Create default rule payload.
-     */
     function getDefaultRule(type) {
         var defaultType = type || 'page';
         var rule = {
@@ -550,24 +647,25 @@
         if (defaultType === 'taxonomy') {
             rule.taxonomy = '';
         }
-
         if (defaultType === 'user_role') {
             rule.values = [];
+        }
+        if (defaultType === 'schedule') {
+            rule.start_date = '';
+            rule.end_date = '';
+        }
+        if (defaultType === 'url_param') {
+            rule.param_name = '';
+            rule.param_value = '';
         }
 
         return rule;
     }
 
-    /**
-     * Rule types that support child/descendant options.
-     */
     function ruleSupportsHierarchyOptions(type) {
-        return type === 'page' || type === 'category' || type === 'taxonomy';
+        return type === 'page' || type === 'category' || type === 'taxonomy' || type === 'woo_product_cat';
     }
 
-    /**
-     * Update status indicator
-     */
     function updateStatus($wrapper, hasRules) {
         var $status = $wrapper.find('.wvd-visibility-status');
         if (hasRules) {
@@ -583,9 +681,10 @@
         }
     }
 
-    /**
-     * Escape HTML securely
-     */
+    function sel(current, value) {
+        return current === value ? ' selected' : '';
+    }
+
     function escapeHtml(text) {
         if (!text) {
             return '';

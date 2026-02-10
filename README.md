@@ -4,12 +4,12 @@
 **Tags:** widget, visibility, descendants, grandchildren, pages
 **Requires at least:** 5.2
 **Tested up to:** 6.9
-**Stable tag:** 1.4.5
+**Stable tag:** 2.0.0
 **Requires PHP:** 7.4
 **License:** GPLv2 or later
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
 
-Show or hide widgets by page, category, taxonomy, post type, and user context with descendant support.
+Show or hide widgets by page, category, taxonomy, tag, author, post type, user context, device, schedule, URL parameters, and WooCommerce pages with full descendant support. Now with rule presets, import/export, preview/debug mode, and block editor compatibility.
 
 == Description ==
 
@@ -39,6 +39,16 @@ This plugin adds an **"Include all descendants"** option that includes ALL level
 - 📄 **Page visibility** with full descendant support
 - 📁 **Category visibility** with hierarchy support
 - 🏷️ **Hierarchical custom taxonomy visibility** with descendant support
+- 🔖 **Tag visibility** for tag archives and tagged posts
+- ✍️ **Author-based visibility** for author archives and posts by specific authors
+- ⏰ **Scheduling** with date range picker for time-limited widget display
+- 🔗 **URL Parameter-based rules** for campaign tracking and conditional display
+- 🛒 **WooCommerce integration** (Shop, Cart, Checkout, My Account, Product Category)
+- 📱 **Device-based visibility** (Mobile/Desktop) using server-side detection
+- 💾 **Rule Presets** - save, load, and manage reusable visibility configurations
+- 📤 **Import/Export** widget visibility rules in JSON format
+- 🐛 **Preview/Debug mode** showing widget visibility status in the admin bar
+- 🧱 **Block Editor compatibility** for legacy widgets in the block widget editor
 - 📝 **Post type** conditions
 - 🏠 **Special pages**: Front page, Blog, Archive, Search, 404
 - 👥 **User role targeting** (any selected role)
@@ -102,6 +112,11 @@ git clone https://github.com/ercanatay/widget-visibility-descendants.git
 | Page | Specific page with optional descendants |
 | Category | Category archive or posts in category |
 | Taxonomy | Hierarchical public custom taxonomy archive/posts with optional descendants |
+| Tag | Tag archive or posts with tag |
+| Author | Author archive or posts by author |
+| Schedule | Date range-based visibility |
+| URL Parameter | Show/hide based on query parameters |
+| Device | Mobile or Desktop |
 | Post Type | Any post type (post, page, custom) |
 | User Role | Match logged-in users by one or more selected roles |
 | Front Page | Site front page |
@@ -112,6 +127,11 @@ git clone https://github.com/ercanatay/widget-visibility-descendants.git
 | Single Post | Any single post |
 | Logged In | User is logged in |
 | Logged Out | User is not logged in |
+| WooCommerce: Shop | WooCommerce shop page |
+| WooCommerce: Cart | Cart page |
+| WooCommerce: Checkout | Checkout page |
+| WooCommerce: My Account | Account page |
+| WooCommerce: Product Category | Product category with descendants |
 
 ## Screenshots
 
@@ -145,9 +165,23 @@ No. The visibility checks are very lightweight and only run when widgets are bei
 
 ### Can I use this with block-based widgets?
 
-This plugin works with classic widgets. For block-based widget areas, the visibility controls appear in the widget settings.
+This plugin works with classic widgets and has enhanced block editor compatibility as of version 2.0.0. For block-based widget areas, the visibility controls appear in the widget settings. Legacy widgets placed in the block widget editor are fully supported with all visibility features including the new condition types.
 
 ## Changelog
+
+### 2.0.0 (2026-02-10)
+- Feature: Added tag (post_tag) visibility support for tag archives and tagged posts.
+- Feature: Added author-based visibility for author archives and posts by specific authors.
+- Feature: Added scheduling support with date range picker for time-limited widget display.
+- Feature: Added URL parameter-based rules for campaign tracking and conditional display.
+- Feature: Added WooCommerce integration with Shop, Cart, Checkout, My Account, and Product Category rules.
+- Feature: Added device-based visibility (Mobile/Desktop) using server-side detection.
+- Feature: Added rule presets system to save, load, and manage reusable visibility configurations.
+- Feature: Added import/export functionality for widget visibility rules (JSON format).
+- Feature: Added preview/debug mode showing widget visibility status in the admin bar.
+- Feature: Enhanced block editor compatibility for legacy widgets in the block widget editor.
+- Security: Extended rule type whitelist and sanitization for all new condition types.
+- i18n: Added translation strings for all new features across 30 language files.
 
 ### 1.4.5 (2026-02-10)
 - Fix: Added defensive `is_array()` validation for widget instance payloads in both admin save and frontend display callbacks.

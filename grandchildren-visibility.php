@@ -11,7 +11,7 @@
  * Plugin Name:       Widget Visibility with Descendants
  * Plugin URI:        https://github.com/ercanatay/widget-visibility-descendants
  * Description:       Control widget visibility based on pages, posts, categories with full descendant (grandchildren) support. A Jetpack-free alternative that includes ALL levels of nested pages.
- * Version:           1.4.5
+ * Version:           2.0.0
  * Requires at least: 5.2
  * Requires PHP:      7.4
  * Author:            Ercan ATAY
@@ -28,7 +28,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-define('WVD_VERSION', '1.4.5');
+define('WVD_VERSION', '2.0.0');
 define('WVD_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WVD_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('WVD_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -78,6 +78,9 @@ final class Widget_Visibility_Descendants {
     private function load_dependencies() {
         require_once WVD_PLUGIN_DIR . 'includes/class-visibility-admin.php';
         require_once WVD_PLUGIN_DIR . 'includes/class-visibility-frontend.php';
+        require_once WVD_PLUGIN_DIR . 'includes/class-visibility-presets.php';
+        require_once WVD_PLUGIN_DIR . 'includes/class-visibility-import-export.php';
+        require_once WVD_PLUGIN_DIR . 'includes/class-visibility-debug.php';
     }
 
     /**
@@ -91,6 +94,11 @@ final class Widget_Visibility_Descendants {
 
         // Initialize frontend
         new WVD_Visibility_Frontend();
+
+        // Initialize new features
+        new WVD_Visibility_Presets();
+        new WVD_Visibility_Import_Export();
+        new WVD_Visibility_Debug();
     }
 }
 

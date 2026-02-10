@@ -225,6 +225,107 @@
     cursor: pointer;
 }
 
+/* Schedule Control */
+.wvd-schedule-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.wvd-schedule-label {
+    font-size: 12px;
+    color: #666;
+}
+
+.wvd-datepicker {
+    width: 120px !important;
+    font-size: 12px;
+}
+
+/* URL Parameter Control */
+.wvd-url-param-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.wvd-param-name,
+.wvd-param-value {
+    width: 120px;
+    font-size: 12px;
+}
+
+/* Presets Section */
+.wvd-presets-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.wvd-save-preset,
+.wvd-load-preset {
+    background: transparent;
+    border: 1px solid #0073aa;
+    border-radius: 3px;
+    color: #0073aa;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 3px 10px;
+}
+
+.wvd-save-preset:hover,
+.wvd-load-preset:hover {
+    background: #0073aa;
+    color: #fff;
+}
+
+.wvd-preset-list {
+    width: 100%;
+    margin-top: 8px;
+}
+
+.wvd-preset-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.wvd-preset-apply {
+    background: transparent;
+    border: 0;
+    color: #0073aa;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 2px 4px;
+    text-align: left;
+    flex: 1;
+}
+
+.wvd-preset-apply:hover {
+    text-decoration: underline;
+}
+
+.wvd-preset-delete {
+    background: transparent;
+    border: 0;
+    color: #a00;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 2px 6px;
+}
+
+.wvd-preset-delete:hover {
+    color: #dc3232;
+}
+
 /* Footer Actions */
 .wvd-panel-footer {
     display: flex;
@@ -271,12 +372,20 @@
     .wvd-rule-taxonomy,
     .wvd-rule-value,
     .wvd-rule-value-container,
-    .wvd-taxonomy-control {
+    .wvd-taxonomy-control,
+    .wvd-schedule-control,
+    .wvd-url-param-control {
         width: 100%;
         max-width: none;
     }
 
     .wvd-rule-options {
         padding-left: 0;
+    }
+
+    .wvd-datepicker,
+    .wvd-param-name,
+    .wvd-param-value {
+        width: 100% !important;
     }
 }
