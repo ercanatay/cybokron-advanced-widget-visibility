@@ -1,7 +1,7 @@
-# Finnish translation for Widget Visibility with Descendants
+# Finnish translation for Cybokron Advanced Widget Visibility
 msgid ""
 msgstr ""
-"Project-Id-Version: Widget Visibility with Descendants 1.0.0\n"
+"Project-Id-Version: Cybokron Advanced Widget Visibility 1.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ercanatay/widget-visibility-"
 "descendants/issues\n"
 "POT-Creation-Date: 2026-02-09 00:00:00+00:00\n"

@@ -1,9 +1,9 @@
-=== Widget Visibility with Descendants ===
+=== Cybokron Advanced Widget Visibility ===
 Contributors: cybokron
 Tags: widget, visibility, descendants, grandchildren, pages
 Requires at least: 5.2
 Tested up to: 6.9
-Stable tag: 1.5.1
+Stable tag: 1.6.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -37,7 +37,7 @@ Turkish, English, Spanish, German, French, Italian, Portuguese (Brazil), Portugu
 
 == Installation ==
 
-1. Upload the `cybokron-descendant-visibility-widgets` folder to the `/wp-content/plugins/` directory
+1. Upload the `cybokron-advanced-widget-visibility` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go to Appearance → Widgets
 4. Edit any widget and click the "Visibility" button
@@ -67,6 +67,12 @@ This plugin works with classic widgets. For block-based widget areas, the visibi
 3. Page hierarchy with descendant matching
 
 == Changelog ==
+
+= 1.6.0 =
+* Rebranded: Plugin renamed to "Cybokron Advanced Widget Visibility".
+* Changed: Plugin URI updated to new GitHub repository.
+* Changed: All GitHub links updated to new repository name.
+* Changed: Translation template and catalog headers updated.
 
 = 1.5.1 =
 * Fixed: Text domain aligned to WordPress.org assigned slug `widget-visibility-with-descendants`.
@@ -134,6 +140,9 @@ This plugin works with classic widgets. For block-based widget areas, the visibi
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.6.0 =
+Plugin rebranded to "Cybokron Advanced Widget Visibility". No functional changes.
 
 = 1.5.1 =
 Text domain and plugin file aligned to WordPress.org assigned slug.

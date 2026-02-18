@@ -1,10 +1,10 @@
-# Widget Visibility with Descendants
+# Cybokron Advanced Widget Visibility
 
 **Contributors:** cybokron
 **Tags:** widget, visibility, descendants, grandchildren, pages
 **Requires at least:** 5.2
 **Tested up to:** 6.9
-**Stable tag:** 1.5.1
+**Stable tag:** 1.6.0
 **Requires PHP:** 7.4
 **License:** GPLv2 or later
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
@@ -52,7 +52,7 @@ This plugin adds an **"Include all descendants"** option that includes ALL level
 
 ### From GitHub
 
-1. Download the latest release from [Releases](https://github.com/ercanatay/widget-visibility-descendants/releases)
+1. Download the latest release from [Releases](https://github.com/ercanatay/cybokron-advanced-widget-visibility/releases)
 2. Upload to `/wp-content/plugins/`
 3. Activate the plugin in WordPress Admin → Plugins
 
@@ -60,7 +60,7 @@ This plugin adds an **"Include all descendants"** option that includes ALL level
 
 ```bash
 cd /path/to/wordpress/wp-content/plugins/
-git clone https://github.com/ercanatay/widget-visibility-descendants.git
+git clone https://github.com/ercanatay/cybokron-advanced-widget-visibility.git
 ```
 
 ### Manual Installation
@@ -149,13 +149,35 @@ This plugin works with classic widgets. For block-based widget areas, the visibi
 
 ## Changelog
 
+### 1.6.0 (2026-02-18)
+- Rebranded: Plugin renamed to "Cybokron Advanced Widget Visibility".
+- Changed: Plugin URI updated to [new GitHub repository](https://github.com/ercanatay/cybokron-advanced-widget-visibility).
+- Changed: All GitHub links updated to new repository name.
+- Changed: Translation template and catalog headers updated.
+
+### 1.5.1 (2026-02-15)
+- Fixed: Text domain aligned to WordPress.org assigned slug `widget-visibility-with-descendants`.
+- Fixed: Renamed main plugin file to match WordPress.org slug.
+- Fixed: Removed `.distignore` from distribution package.
+- Changed: Translation file names updated to match new text domain.
+
+### 1.5.0 (2026-02-15)
+- WordPress.org submission release.
+- Changed: Renamed plugin slug and main file to `cybokron-descendant-visibility-widgets`.
+- Changed: Text domain aligned to plugin slug.
+- Changed: Contributors updated to valid WordPress.org username `cybokron`.
+- Added: `readme.txt` in WordPress.org standard format.
+- Added: `.distignore` for clean distribution packaging.
+- Added: `uninstall.php` with proper `WP_UNINSTALL_PLUGIN` guard.
+- Added: GitHub Actions deploy workflow for WordPress.org SVN.
+
 ### 1.4.7 (2026-02-13)
 - Security: Restricted widget visibility UI rendering to users with `edit_theme_options`.
 - Security: Prevented visibility data loss by restoring previous `wvd_visibility` settings when unauthorized users trigger widget updates.
 
 ### 1.4.6 (2026-02-11)
 - Docs: Reviewed recent merged PRs and synchronized release notes for maintainers.
-- Maintenance: Added explicit PR references to latest stabilization and compliance work ([PR #25](https://github.com/ercanatay/widget-visibility-descendants/pull/25), [PR #24](https://github.com/ercanatay/widget-visibility-descendants/pull/24)).
+- Maintenance: Added explicit PR references to latest stabilization and compliance work ([PR #25](https://github.com/ercanatay/cybokron-advanced-widget-visibility/pull/25), [PR #24](https://github.com/ercanatay/cybokron-advanced-widget-visibility/pull/24)).
 - Review: Confirmed there are no currently open pull requests pending merge.
 
 ### 1.4.5 (2026-02-10)
@@ -204,7 +226,7 @@ This plugin works with classic widgets. For block-based widget areas, the visibi
 - Fix: Removed root `.gitignore` from distributable plugin files to satisfy hidden-file checks.
 
 ### 1.3.1 (2026-02-08)
-- Fix: Improved category rule evaluation robustness for single posts ([PR #19](https://github.com/ercanatay/widget-visibility-descendants/pull/19)).
+- Fix: Improved category rule evaluation robustness for single posts ([PR #19](https://github.com/ercanatay/cybokron-advanced-widget-visibility/pull/19)).
 - Stability: Switched post ID lookup to `get_queried_object_id()` in widget visibility checks.
 - Hardening: Added zero-ID guard and `WP_Error`/array validation for `wp_get_post_categories()` results.
 - Type Safety: Cast single-post category IDs to integers for reliable strict comparison.
@@ -279,7 +301,7 @@ This project is licensed under the GPL v2 or later - see the [LICENSE](LICENSE) 
 ## Support
 
 If you encounter any issues or have questions:
-- Open an issue on [GitHub Issues](https://github.com/ercanatay/widget-visibility-descendants/issues)
+- Open an issue on [GitHub Issues](https://github.com/ercanatay/cybokron-advanced-widget-visibility/issues)
 - Check existing issues for solutions
 
 ---
