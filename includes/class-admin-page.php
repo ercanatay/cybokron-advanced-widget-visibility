@@ -210,13 +210,11 @@ class WVD_Admin_Page {
                     &rarr; <a href="<?php echo esc_url(admin_url('widgets.php')); ?>">
                         <?php esc_html_e('Manage Widgets', 'widget-visibility-with-descendants'); ?>
                     </a>
-                    (Appearance &rarr; Widgets)
                 </li>
                 <li>
                     &rarr; <a href="https://github.com/ercanatay/cybokron-advanced-widget-visibility/issues" target="_blank" rel="noopener noreferrer">
                         <?php esc_html_e('Support', 'widget-visibility-with-descendants'); ?>
                     </a>
-                    (GitHub Issues)
                 </li>
             </ul>
         </div>
