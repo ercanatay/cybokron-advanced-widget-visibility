@@ -15,14 +15,14 @@ if (!defined('ABSPATH')) {
  *
  * @since 1.7.0
  */
-class WVD_Admin_Page {
+class Cybawv_Admin_Page {
 
     /**
      * Option name for plugin settings.
      *
      * @var string
      */
-    private $option_name = 'wvd_settings';
+    private $option_name = 'cybawv_settings';
 
     /**
      * Constructor
@@ -37,10 +37,10 @@ class WVD_Admin_Page {
      */
     public function add_menu_page() {
         add_menu_page(
-            __('Widget Visibility', 'widget-visibility-with-descendants'),
-            __('Widget Visibility', 'widget-visibility-with-descendants'),
+            __('Widget Visibility', 'cybokron-advanced-widget-visibility'),
+            __('Widget Visibility', 'cybokron-advanced-widget-visibility'),
             'edit_theme_options',
-            'wvd-settings',
+            'cybawv-settings',
             [$this, 'render_page'],
             'dashicons-visibility',
             59
@@ -52,40 +52,40 @@ class WVD_Admin_Page {
      */
     public function register_settings() {
         register_setting(
-            'wvd_settings_group',
+            'cybawv_settings_group',
             $this->option_name,
             ['sanitize_callback' => [$this, 'sanitize_settings']]
         );
 
         add_settings_section(
-            'wvd_main_section',
-            __('Settings', 'widget-visibility-with-descendants'),
+            'cybawv_main_section',
+            __('Settings', 'cybokron-advanced-widget-visibility'),
             '__return_false',
-            'wvd-settings'
+            'cybawv-settings'
         );
 
         add_settings_field(
-            'wvd_global_bypass',
-            __('Global Bypass', 'widget-visibility-with-descendants'),
+            'cybawv_global_bypass',
+            __('Global Bypass', 'cybokron-advanced-widget-visibility'),
             [$this, 'render_global_bypass_field'],
-            'wvd-settings',
-            'wvd_main_section'
+            'cybawv-settings',
+            'cybawv_main_section'
         );
 
         add_settings_field(
-            'wvd_max_rules',
-            __('Maximum Rules Per Widget', 'widget-visibility-with-descendants'),
+            'cybawv_max_rules',
+            __('Maximum Rules Per Widget', 'cybokron-advanced-widget-visibility'),
             [$this, 'render_max_rules_field'],
-            'wvd-settings',
-            'wvd_main_section'
+            'cybawv-settings',
+            'cybawv_main_section'
         );
 
         add_settings_field(
-            'wvd_delete_data',
-            __('Uninstall', 'widget-visibility-with-descendants'),
+            'cybawv_delete_data',
+            __('Uninstall', 'cybokron-advanced-widget-visibility'),
             [$this, 'render_delete_data_field'],
-            'wvd-settings',
-            'wvd_main_section'
+            'cybawv-settings',
+            'cybawv_main_section'
         );
     }
 
@@ -124,10 +124,10 @@ class WVD_Admin_Page {
                    name="<?php echo esc_attr($this->option_name); ?>[global_bypass]"
                    value="1"
                    <?php checked($checked); ?>>
-            <?php esc_html_e('Temporarily disable all visibility rules', 'widget-visibility-with-descendants'); ?>
+            <?php esc_html_e('Temporarily disable all visibility rules', 'cybokron-advanced-widget-visibility'); ?>
         </label>
         <p class="description">
-            <?php esc_html_e('All rules are ignored and widgets are shown everywhere. Useful for debugging.', 'widget-visibility-with-descendants'); ?>
+            <?php esc_html_e('All rules are ignored and widgets are shown everywhere. Useful for debugging.', 'cybokron-advanced-widget-visibility'); ?>
         </p>
         <?php
     }
@@ -148,7 +148,7 @@ class WVD_Admin_Page {
                step="1"
                class="small-text">
         <p class="description">
-            <?php esc_html_e('Maximum number of visibility rules allowed per widget.', 'widget-visibility-with-descendants'); ?>
+            <?php esc_html_e('Maximum number of visibility rules allowed per widget.', 'cybokron-advanced-widget-visibility'); ?>
         </p>
         <?php
     }
@@ -165,10 +165,10 @@ class WVD_Admin_Page {
                    name="<?php echo esc_attr($this->option_name); ?>[delete_data_on_uninstall]"
                    value="1"
                    <?php checked($checked); ?>>
-            <?php esc_html_e('Delete visibility data when plugin is uninstalled', 'widget-visibility-with-descendants'); ?>
+            <?php esc_html_e('Delete visibility data when plugin is uninstalled', 'cybokron-advanced-widget-visibility'); ?>
         </label>
         <p class="description" style="color: #d63638;">
-            <strong>&#9888; <?php esc_html_e('Warning: This action cannot be undone.', 'widget-visibility-with-descendants'); ?></strong>
+            <strong>&#9888; <?php esc_html_e('Warning: This action cannot be undone.', 'cybokron-advanced-widget-visibility'); ?></strong>
         </p>
         <?php
     }
@@ -183,7 +183,7 @@ class WVD_Admin_Page {
         ?>
         <div class="wrap">
             <h1>
-                <img src="<?php echo esc_url(WVD_PLUGIN_URL . 'assets/images/icon-128x128.png'); ?>"
+                <img src="<?php echo esc_url(CYBAWV_PLUGIN_URL . 'assets/images/icon-128x128.png'); ?>"
                      alt=""
                      width="48"
                      height="48"
@@ -192,28 +192,28 @@ class WVD_Admin_Page {
             </h1>
             <p><?php
                 /* translators: %s: version number */
-                printf(esc_html__('Version %s', 'widget-visibility-with-descendants'), esc_html(WVD_VERSION));
+                printf(esc_html__('Version %s', 'cybokron-advanced-widget-visibility'), esc_html(CYBAWV_VERSION));
             ?></p>
 
             <form method="post" action="options.php">
                 <?php
-                settings_fields('wvd_settings_group');
-                do_settings_sections('wvd-settings');
+                settings_fields('cybawv_settings_group');
+                do_settings_sections('cybawv-settings');
                 submit_button();
                 ?>
             </form>
 
             <hr>
-            <h2><?php esc_html_e('Quick Links', 'widget-visibility-with-descendants'); ?></h2>
+            <h2><?php esc_html_e('Quick Links', 'cybokron-advanced-widget-visibility'); ?></h2>
             <ul>
                 <li>
                     &rarr; <a href="<?php echo esc_url(admin_url('widgets.php')); ?>">
-                        <?php esc_html_e('Manage Widgets', 'widget-visibility-with-descendants'); ?>
+                        <?php esc_html_e('Manage Widgets', 'cybokron-advanced-widget-visibility'); ?>
                     </a>
                 </li>
                 <li>
                     &rarr; <a href="https://github.com/ercanatay/cybokron-advanced-widget-visibility/issues" target="_blank" rel="noopener noreferrer">
-                        <?php esc_html_e('Support', 'widget-visibility-with-descendants'); ?>
+                        <?php esc_html_e('Support', 'cybokron-advanced-widget-visibility'); ?>
                     </a>
                 </li>
             </ul>

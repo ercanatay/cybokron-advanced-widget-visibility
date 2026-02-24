@@ -1,46 +1,46 @@
 /**
- * Widget Visibility with Descendants - Admin Styles
+ * Cybokron Advanced Widget Visibility - Admin Styles
  */
 
 /* Visibility Toggle Button */
-.wvd-visibility-wrapper {
+.cybawv-visibility-wrapper {
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid #ddd;
 }
 
-.wvd-visibility-toggle {
+.cybawv-visibility-toggle {
     display: flex;
     align-items: center;
     gap: 10px;
     margin: 0;
 }
 
-.wvd-visibility-button {
+.cybawv-visibility-button {
     background: #0073aa;
     border-color: #0073aa;
     color: #fff;
 }
 
-.wvd-visibility-button:hover,
-.wvd-visibility-button:focus {
+.cybawv-visibility-button:hover,
+.cybawv-visibility-button:focus {
     background: #005a87;
     border-color: #005a87;
     color: #fff;
 }
 
-.wvd-visibility-status {
+.cybawv-visibility-status {
     font-size: 12px;
     color: #666;
 }
 
-.wvd-visibility-status.wvd-has-rules {
+.cybawv-visibility-status.cybawv-has-rules {
     color: #0073aa;
     font-weight: 600;
 }
 
 /* Visibility Panel */
-.wvd-visibility-panel {
+.cybawv-visibility-panel {
     background: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -49,7 +49,7 @@
 }
 
 /* Action Row (Show/Hide) */
-.wvd-action-row {
+.cybawv-action-row {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -57,17 +57,17 @@
     font-size: 13px;
 }
 
-.wvd-action-row select {
+.cybawv-action-row select {
     min-width: 80px;
 }
 
 /* Rules Container */
-.wvd-rules {
+.cybawv-rules {
     margin-bottom: 15px;
 }
 
 /* Single Rule */
-.wvd-rule {
+.cybawv-rule {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
@@ -79,14 +79,14 @@
     margin-bottom: 8px;
 }
 
-.wvd-rule:last-child {
+.cybawv-rule:last-child {
     margin-bottom: 0;
 }
 
 /* Button-like Actions */
-.wvd-rule-remove,
-.wvd-add-rule,
-.wvd-delete-rules {
+.cybawv-rule-remove,
+.cybawv-add-rule,
+.cybawv-delete-rules {
     background: transparent;
     border: 0;
     border-radius: 2px;
@@ -96,7 +96,7 @@
 }
 
 /* Remove Button */
-.wvd-rule-remove {
+.cybawv-rule-remove {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -109,57 +109,57 @@
     padding: 5px;
 }
 
-.wvd-rule-remove:hover {
+.cybawv-rule-remove:hover {
     color: #dc3232;
 }
 
 /* Rule Selects */
-.wvd-rule select {
+.cybawv-rule select {
     min-width: 120px;
 }
 
-.wvd-rule-type {
+.cybawv-rule-type {
     min-width: 140px !important;
 }
 
-.wvd-rule-value {
+.cybawv-rule-value {
     min-width: 180px !important;
     max-width: 250px;
 }
 
-.wvd-rule-value-container {
+.cybawv-rule-value-container {
     display: inline-flex;
     align-items: flex-start;
     gap: 8px;
 }
 
-.wvd-taxonomy-control {
+.cybawv-taxonomy-control {
     display: inline-flex;
     align-items: flex-start;
     gap: 8px;
     flex-wrap: wrap;
 }
 
-.wvd-rule-taxonomy {
+.cybawv-rule-taxonomy {
     min-width: 180px !important;
     max-width: 250px;
 }
 
-.wvd-rule-values {
+.cybawv-rule-values {
     min-width: 220px !important;
     max-width: 280px;
     min-height: 90px;
 }
 
 /* Rule Label */
-.wvd-rule-label {
+.cybawv-rule-label {
     color: #666;
     font-size: 13px;
     padding: 5px 0;
 }
 
 /* Checkboxes Container */
-.wvd-rule-options {
+.cybawv-rule-options {
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -168,7 +168,7 @@
     padding-left: 25px;
 }
 
-.wvd-rule-options label {
+.cybawv-rule-options label {
     display: flex;
     align-items: center;
     gap: 5px;
@@ -177,18 +177,18 @@
     cursor: pointer;
 }
 
-.wvd-rule-options input[type="checkbox"] {
+.cybawv-rule-options input[type="checkbox"] {
     margin: 0;
 }
 
 /* Descendants checkbox highlight */
-.wvd-rule-options .wvd-descendants-option {
+.cybawv-rule-options .cybawv-descendants-option {
     color: #0073aa;
     font-weight: 500;
 }
 
 /* Add Condition Button */
-.wvd-add-rule {
+.cybawv-add-rule {
     display: inline-flex;
     align-items: center;
     gap: 5px;
@@ -198,19 +198,19 @@
     font-size: 13px;
 }
 
-.wvd-add-rule:hover {
+.cybawv-add-rule:hover {
     color: #005a87;
     text-decoration: underline;
 }
 
-.wvd-add-rule::before {
+.cybawv-add-rule::before {
     content: "+";
     font-size: 16px;
     font-weight: bold;
 }
 
 /* Match All Checkbox */
-.wvd-match-all {
+.cybawv-match-all {
     display: flex;
     align-items: center;
     gap: 5px;
@@ -219,14 +219,14 @@
     border-top: 1px solid #eee;
 }
 
-.wvd-match-all label {
+.cybawv-match-all label {
     font-size: 12px;
     color: #555;
     cursor: pointer;
 }
 
 /* Footer Actions */
-.wvd-panel-footer {
+.cybawv-panel-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -235,26 +235,26 @@
     border-top: 1px solid #ddd;
 }
 
-.wvd-delete-rules {
+.cybawv-delete-rules {
     color: #a00;
     cursor: pointer;
     text-decoration: none;
     font-size: 12px;
 }
 
-.wvd-delete-rules:hover {
+.cybawv-delete-rules:hover {
     color: #dc3232;
     text-decoration: underline;
 }
 
-.wvd-rule-remove:focus-visible,
-.wvd-add-rule:focus-visible,
-.wvd-delete-rules:focus-visible {
+.cybawv-rule-remove:focus-visible,
+.cybawv-add-rule:focus-visible,
+.cybawv-delete-rules:focus-visible {
     box-shadow: 0 0 0 2px #2271b1;
     outline: 2px solid transparent;
 }
 
-.wvd-done-button {
+.cybawv-done-button {
     background: #0073aa;
     border-color: #0073aa;
     color: #fff;
@@ -262,21 +262,21 @@
 
 /* Responsive */
 @media screen and (max-width: 782px) {
-    .wvd-rule {
+    .cybawv-rule {
         flex-direction: column;
     }
 
-    .wvd-rule select,
-    .wvd-rule-values,
-    .wvd-rule-taxonomy,
-    .wvd-rule-value,
-    .wvd-rule-value-container,
-    .wvd-taxonomy-control {
+    .cybawv-rule select,
+    .cybawv-rule-values,
+    .cybawv-rule-taxonomy,
+    .cybawv-rule-value,
+    .cybawv-rule-value-container,
+    .cybawv-taxonomy-control {
         width: 100%;
         max-width: none;
     }
 
-    .wvd-rule-options {
+    .cybawv-rule-options {
         padding-left: 0;
     }
 }

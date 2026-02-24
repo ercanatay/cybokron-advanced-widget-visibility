@@ -2,7 +2,7 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Cybokron Advanced Widget Visibility 1.7.0\n"
+"Project-Id-Version: Cybokron Advanced Widget Visibility 1.8.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ercanatay/cybokron-advanced-widget-visibility/issues\n"
 "POT-Creation-Date: 2026-02-18 00:00:00+00:00\n"
 "MIME-Version: 1.0\n"

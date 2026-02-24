@@ -1,8 +1,8 @@
 <?php
 /**
- * Frontend functionality for Widget Visibility with Descendants
+ * Frontend functionality for Cybokron Advanced Widget Visibility
  *
- * @package Widget_Visibility_Descendants
+ * @package CybokronAdvancedWidgetVisibility
  */
 
 // Prevent direct access
@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 /**
  * Frontend Class
  */
-class WVD_Visibility_Frontend {
+class Cybawv_Visibility_Frontend {
 
     /**
      * Cached term ancestors to avoid repeated taxonomy lookups.
@@ -34,17 +34,17 @@ class WVD_Visibility_Frontend {
      */
     public function filter_widget_display($instance, $widget, $args) {
         // Global bypass: skip all visibility rules when enabled
-        $settings = get_option('wvd_settings', []);
+        $settings = get_option('cybawv_settings', []);
         if (!empty($settings['global_bypass'])) {
             return $instance;
         }
 
         // No instance or no visibility rules
-        if (!is_array($instance) || empty($instance['wvd_visibility']['rules'])) {
+        if (!is_array($instance) || empty($instance['cybawv_visibility']['rules'])) {
             return $instance;
         }
 
-        $visibility = $instance['wvd_visibility'];
+        $visibility = $instance['cybawv_visibility'];
         $action = isset($visibility['action']) ? $visibility['action'] : 'show';
         $match_all = !empty($visibility['match_all']);
         $rules = is_array($visibility['rules']) ? $visibility['rules'] : [];

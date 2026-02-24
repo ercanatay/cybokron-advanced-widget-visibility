@@ -1,5 +1,5 @@
 /**
- * Widget Visibility with Descendants - Admin JavaScript
+ * Cybokron Advanced Widget Visibility - Admin JavaScript
  */
 
 (function($) {
@@ -20,18 +20,18 @@
      */
     function initVisibilityUI(container) {
         var $wrappers = container
-            ? $(container).find('.wvd-visibility-wrapper')
-            : $('.wvd-visibility-wrapper');
+            ? $(container).find('.cybawv-visibility-wrapper')
+            : $('.cybawv-visibility-wrapper');
 
         $wrappers.each(function() {
             var $wrapper = $(this);
 
             // Skip if already initialized
-            if ($wrapper.data('wvd-initialized')) {
+            if ($wrapper.data('cybawv-initialized')) {
                 return;
             }
 
-            $wrapper.data('wvd-initialized', true);
+            $wrapper.data('cybawv-initialized', true);
             setupWidget($wrapper);
         });
     }
@@ -40,10 +40,10 @@
      * Setup a single widget's visibility UI
      */
     function setupWidget($wrapper) {
-        var $button = $wrapper.find('.wvd-visibility-button');
-        var $panel = $wrapper.find('.wvd-visibility-panel');
-        var $dataInput = $wrapper.find('.wvd-visibility-data');
-        var $content = $wrapper.find('.wvd-visibility-content');
+        var $button = $wrapper.find('.cybawv-visibility-button');
+        var $panel = $wrapper.find('.cybawv-visibility-panel');
+        var $dataInput = $wrapper.find('.cybawv-visibility-data');
+        var $content = $wrapper.find('.cybawv-visibility-content');
 
         // Toggle panel
         $button.on('click', function(e) {
@@ -65,16 +65,16 @@
         var html = '';
 
         // Action row (Show/Hide)
-        html += '<div class="wvd-action-row">';
-        html += '<select class="wvd-action-select">';
-        html += '<option value="show"' + (data.action === 'show' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.show) + '</option>';
-        html += '<option value="hide"' + (data.action === 'hide' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.hide) + '</option>';
+        html += '<div class="cybawv-action-row">';
+        html += '<select class="cybawv-action-select">';
+        html += '<option value="show"' + (data.action === 'show' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.show) + '</option>';
+        html += '<option value="hide"' + (data.action === 'hide' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.hide) + '</option>';
         html += '</select>';
-        html += '<span class="wvd-rule-label">' + escapeHtml(wvdData.i18n.if) + ':</span>';
+        html += '<span class="cybawv-rule-label">' + escapeHtml(cybawvData.i18n.if) + ':</span>';
         html += '</div>';
 
         // Rules container
-        html += '<div class="wvd-rules">';
+        html += '<div class="cybawv-rules">';
         if (data.rules && data.rules.length > 0) {
             data.rules.forEach(function(rule, index) {
                 html += renderRule(rule, index);
@@ -83,23 +83,23 @@
         html += '</div>';
 
         // Add condition button
-        html += '<button type="button" class="wvd-add-rule">' + escapeHtml(wvdData.i18n.addCondition) + '</button>';
+        html += '<button type="button" class="cybawv-add-rule">' + escapeHtml(cybawvData.i18n.addCondition) + '</button>';
 
         // Match all checkbox
-        html += '<div class="wvd-match-all">';
+        html += '<div class="cybawv-match-all">';
         html += '<label>';
-        html += '<input type="checkbox" class="wvd-match-all-checkbox"' + (data.match_all ? ' checked' : '') + '>';
-        html += ' ' + escapeHtml(wvdData.i18n.matchAll);
+        html += '<input type="checkbox" class="cybawv-match-all-checkbox"' + (data.match_all ? ' checked' : '') + '>';
+        html += ' ' + escapeHtml(cybawvData.i18n.matchAll);
         html += '</label>';
         html += '</div>';
 
         // Footer
-        html += '<div class="wvd-panel-footer">';
-        html += '<button type="button" class="wvd-delete-rules">' + escapeHtml(wvdData.i18n.delete) + '</button>';
-        html += '<button type="button" class="button wvd-done-button">' + escapeHtml(wvdData.i18n.done) + '</button>';
+        html += '<div class="cybawv-panel-footer">';
+        html += '<button type="button" class="cybawv-delete-rules">' + escapeHtml(cybawvData.i18n.delete) + '</button>';
+        html += '<button type="button" class="button cybawv-done-button">' + escapeHtml(cybawvData.i18n.done) + '</button>';
         html += '</div>';
 
-        $content.off('.wvd');
+        $content.off('.cybawv');
         $content.html(html);
 
         // Bind events
@@ -115,33 +115,33 @@
             normalizedRule = getDefaultRule('page');
         }
 
-        var html = '<div class="wvd-rule" data-index="' + index + '">';
+        var html = '<div class="cybawv-rule" data-index="' + index + '">';
 
         // Remove button
-        html += '<button type="button" class="wvd-rule-remove" aria-label="' + escapeHtml(wvdData.i18n.remove) + '" title="' + escapeHtml(wvdData.i18n.remove) + '">&times;</button>';
+        html += '<button type="button" class="cybawv-rule-remove" aria-label="' + escapeHtml(cybawvData.i18n.remove) + '" title="' + escapeHtml(cybawvData.i18n.remove) + '">&times;</button>';
 
         // Type select
-        html += '<select class="wvd-rule-type">';
-        html += '<option value="page"' + (normalizedRule.type === 'page' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.page) + '</option>';
-        html += '<option value="category"' + (normalizedRule.type === 'category' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.category) + '</option>';
-        html += '<option value="post_type"' + (normalizedRule.type === 'post_type' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.postType) + '</option>';
-        html += '<option value="taxonomy"' + (normalizedRule.type === 'taxonomy' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.taxonomy) + '</option>';
-        html += '<option value="user_role"' + (normalizedRule.type === 'user_role' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.userRole) + '</option>';
-        html += '<option value="front_page"' + (normalizedRule.type === 'front_page' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.frontPage) + '</option>';
-        html += '<option value="blog"' + (normalizedRule.type === 'blog' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.blog) + '</option>';
-        html += '<option value="archive"' + (normalizedRule.type === 'archive' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.archive) + '</option>';
-        html += '<option value="search"' + (normalizedRule.type === 'search' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.search) + '</option>';
-        html += '<option value="404"' + (normalizedRule.type === '404' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.notFound) + '</option>';
-        html += '<option value="single"' + (normalizedRule.type === 'single' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.single) + '</option>';
-        html += '<option value="logged_in"' + (normalizedRule.type === 'logged_in' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.loggedIn) + '</option>';
-        html += '<option value="logged_out"' + (normalizedRule.type === 'logged_out' ? ' selected' : '') + '>' + escapeHtml(wvdData.i18n.loggedOut) + '</option>';
+        html += '<select class="cybawv-rule-type">';
+        html += '<option value="page"' + (normalizedRule.type === 'page' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.page) + '</option>';
+        html += '<option value="category"' + (normalizedRule.type === 'category' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.category) + '</option>';
+        html += '<option value="post_type"' + (normalizedRule.type === 'post_type' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.postType) + '</option>';
+        html += '<option value="taxonomy"' + (normalizedRule.type === 'taxonomy' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.taxonomy) + '</option>';
+        html += '<option value="user_role"' + (normalizedRule.type === 'user_role' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.userRole) + '</option>';
+        html += '<option value="front_page"' + (normalizedRule.type === 'front_page' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.frontPage) + '</option>';
+        html += '<option value="blog"' + (normalizedRule.type === 'blog' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.blog) + '</option>';
+        html += '<option value="archive"' + (normalizedRule.type === 'archive' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.archive) + '</option>';
+        html += '<option value="search"' + (normalizedRule.type === 'search' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.search) + '</option>';
+        html += '<option value="404"' + (normalizedRule.type === '404' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.notFound) + '</option>';
+        html += '<option value="single"' + (normalizedRule.type === 'single' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.single) + '</option>';
+        html += '<option value="logged_in"' + (normalizedRule.type === 'logged_in' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.loggedIn) + '</option>';
+        html += '<option value="logged_out"' + (normalizedRule.type === 'logged_out' ? ' selected' : '') + '>' + escapeHtml(cybawvData.i18n.loggedOut) + '</option>';
         html += '</select>';
 
         // Label
-        html += '<span class="wvd-rule-label">' + escapeHtml(wvdData.i18n.is) + '</span>';
+        html += '<span class="cybawv-rule-label">' + escapeHtml(cybawvData.i18n.is) + '</span>';
 
         // Value control (depends on type)
-        html += '<span class="wvd-rule-value-container">';
+        html += '<span class="cybawv-rule-value-container">';
         html += renderValueControl(normalizedRule);
         html += '</span>';
 
@@ -163,18 +163,18 @@
 
         switch (rule.type) {
             case 'page':
-                items = Array.isArray(wvdData.pages) ? wvdData.pages : [];
-                placeholder = escapeHtml(wvdData.i18n.selectPage);
+                items = Array.isArray(cybawvData.pages) ? cybawvData.pages : [];
+                placeholder = escapeHtml(cybawvData.i18n.selectPage);
                 return renderSingleValueSelect(items, placeholder, rule.value);
 
             case 'category':
-                items = Array.isArray(wvdData.categories) ? wvdData.categories : [];
-                placeholder = escapeHtml(wvdData.i18n.selectCategory);
+                items = Array.isArray(cybawvData.categories) ? cybawvData.categories : [];
+                placeholder = escapeHtml(cybawvData.i18n.selectCategory);
                 return renderSingleValueSelect(items, placeholder, rule.value);
 
             case 'post_type':
-                items = Array.isArray(wvdData.postTypes) ? wvdData.postTypes : [];
-                placeholder = escapeHtml(wvdData.i18n.selectPostType);
+                items = Array.isArray(cybawvData.postTypes) ? cybawvData.postTypes : [];
+                placeholder = escapeHtml(cybawvData.i18n.selectPostType);
                 return renderSingleValueSelect(items, placeholder, rule.value);
 
             case 'taxonomy':
@@ -184,7 +184,7 @@
                 return renderRoleValueControl(rule);
 
             default:
-                return '<span class="wvd-rule-value-na">—</span>';
+                return '<span class="cybawv-rule-value-na">—</span>';
         }
     }
 
@@ -192,7 +192,7 @@
      * Render single-select value control
      */
     function renderSingleValueSelect(items, placeholder, selectedValue) {
-        var html = '<select class="wvd-rule-value">';
+        var html = '<select class="cybawv-rule-value">';
         html += '<option value="">' + placeholder + '</option>';
 
         items.forEach(function(item) {
@@ -211,13 +211,13 @@
      * Render taxonomy selector + term selector.
      */
     function renderTaxonomyValueControl(rule) {
-        var taxonomies = Array.isArray(wvdData.taxonomies) ? wvdData.taxonomies : [];
+        var taxonomies = Array.isArray(cybawvData.taxonomies) ? cybawvData.taxonomies : [];
         var selectedTaxonomy = (typeof rule.taxonomy === 'string') ? rule.taxonomy : '';
         var selectedTerm = rule.value || '';
-        var html = '<span class="wvd-taxonomy-control">';
+        var html = '<span class="cybawv-taxonomy-control">';
 
-        html += '<select class="wvd-rule-taxonomy">';
-        html += '<option value="">' + escapeHtml(wvdData.i18n.selectTaxonomy) + '</option>';
+        html += '<select class="cybawv-rule-taxonomy">';
+        html += '<option value="">' + escapeHtml(cybawvData.i18n.selectTaxonomy) + '</option>';
         taxonomies.forEach(function(taxonomy) {
             var selected = (selectedTaxonomy === taxonomy.id) ? ' selected' : '';
             html += '<option value="' + escapeHtml(taxonomy.id) + '"' + selected + '>';
@@ -236,10 +236,10 @@
      * Render term selector for selected taxonomy.
      */
     function renderTaxonomyTermSelect(taxonomy, selectedTerm) {
-        var termsMap = (wvdData && wvdData.taxonomyTerms) ? wvdData.taxonomyTerms : {};
+        var termsMap = (cybawvData && cybawvData.taxonomyTerms) ? cybawvData.taxonomyTerms : {};
         var terms = (taxonomy && Array.isArray(termsMap[taxonomy])) ? termsMap[taxonomy] : [];
-        var html = '<select class="wvd-rule-value">';
-        html += '<option value="">' + escapeHtml(wvdData.i18n.selectTerm) + '</option>';
+        var html = '<select class="cybawv-rule-value">';
+        html += '<option value="">' + escapeHtml(cybawvData.i18n.selectTerm) + '</option>';
 
         terms.forEach(function(term) {
             var selected = (String(selectedTerm) === String(term.id)) ? ' selected' : '';
@@ -257,12 +257,12 @@
      * Render multi-role selector.
      */
     function renderRoleValueControl(rule) {
-        var roles = Array.isArray(wvdData.roles) ? wvdData.roles : [];
+        var roles = Array.isArray(cybawvData.roles) ? cybawvData.roles : [];
         var selectedRoles = Array.isArray(rule.values) ? rule.values.map(String) : [];
-        var html = '<select class="wvd-rule-values" multiple="multiple" size="4">';
+        var html = '<select class="cybawv-rule-values" multiple="multiple" size="4">';
 
         if (roles.length === 0) {
-            html += '<option value="" disabled="disabled">' + escapeHtml(wvdData.i18n.selectRoles) + '</option>';
+            html += '<option value="" disabled="disabled">' + escapeHtml(cybawvData.i18n.selectRoles) + '</option>';
         }
 
         roles.forEach(function(role) {
@@ -280,18 +280,18 @@
      * Render rule options (checkboxes)
      */
     function renderRuleOptions(rule) {
-        var html = '<div class="wvd-rule-options">';
+        var html = '<div class="cybawv-rule-options">';
 
         // Include children
         html += '<label>';
-        html += '<input type="checkbox" class="wvd-include-children"' + (rule.include_children ? ' checked' : '') + '>';
-        html += ' ' + escapeHtml(wvdData.i18n.includeChildren);
+        html += '<input type="checkbox" class="cybawv-include-children"' + (rule.include_children ? ' checked' : '') + '>';
+        html += ' ' + escapeHtml(cybawvData.i18n.includeChildren);
         html += '</label>';
 
         // Include all descendants
-        html += '<label class="wvd-descendants-option">';
-        html += '<input type="checkbox" class="wvd-include-descendants"' + (rule.include_descendants ? ' checked' : '') + '>';
-        html += ' ' + escapeHtml(wvdData.i18n.includeDescendants);
+        html += '<label class="cybawv-descendants-option">';
+        html += '<input type="checkbox" class="cybawv-include-descendants"' + (rule.include_descendants ? ' checked' : '') + '>';
+        html += ' ' + escapeHtml(cybawvData.i18n.includeDescendants);
         html += '</label>';
 
         html += '</div>';
@@ -302,27 +302,27 @@
      * Bind events to panel elements
      */
     function bindPanelEvents($content, $dataInput) {
-        var $wrapper = $content.closest('.wvd-visibility-wrapper');
-        var $panel = $wrapper.find('.wvd-visibility-panel');
+        var $wrapper = $content.closest('.cybawv-visibility-wrapper');
+        var $panel = $wrapper.find('.cybawv-visibility-panel');
 
         // Action change
-        $content.on('change.wvd', '.wvd-action-select', function() {
+        $content.on('change.cybawv', '.cybawv-action-select', function() {
             updateData($content, $dataInput);
         });
 
         // Rule type change
-        $content.on('change.wvd', '.wvd-rule-type', function() {
-            var $rule = $(this).closest('.wvd-rule');
+        $content.on('change.cybawv', '.cybawv-rule-type', function() {
+            var $rule = $(this).closest('.cybawv-rule');
             var type = $(this).val();
             var defaultRule = getDefaultRule(type);
 
             // Update value control
-            $rule.find('.wvd-rule-value-container').replaceWith(
-                '<span class="wvd-rule-value-container">' + renderValueControl(defaultRule) + '</span>'
+            $rule.find('.cybawv-rule-value-container').replaceWith(
+                '<span class="cybawv-rule-value-container">' + renderValueControl(defaultRule) + '</span>'
             );
 
             // Update options
-            var $optionsContainer = $rule.find('.wvd-rule-options');
+            var $optionsContainer = $rule.find('.cybawv-rule-options');
             if (ruleSupportsHierarchyOptions(type)) {
                 if ($optionsContainer.length === 0) {
                     $rule.append(renderRuleOptions(defaultRule));
@@ -337,65 +337,65 @@
         });
 
         // Taxonomy selector change
-        $content.on('change.wvd', '.wvd-rule-taxonomy', function() {
+        $content.on('change.cybawv', '.cybawv-rule-taxonomy', function() {
             var $taxonomySelect = $(this);
             var taxonomy = $taxonomySelect.val() || '';
-            var $taxonomyControl = $taxonomySelect.closest('.wvd-taxonomy-control');
-            $taxonomyControl.find('.wvd-rule-value').replaceWith(renderTaxonomyTermSelect(taxonomy, ''));
+            var $taxonomyControl = $taxonomySelect.closest('.cybawv-taxonomy-control');
+            $taxonomyControl.find('.cybawv-rule-value').replaceWith(renderTaxonomyTermSelect(taxonomy, ''));
             updateData($content, $dataInput);
         });
 
         // Value changes
-        $content.on('change.wvd', '.wvd-rule-value, .wvd-rule-values', function() {
+        $content.on('change.cybawv', '.cybawv-rule-value, .cybawv-rule-values', function() {
             updateData($content, $dataInput);
         });
 
         // Checkbox changes
-        $content.on('change.wvd', '.wvd-include-children, .wvd-include-descendants', function() {
+        $content.on('change.cybawv', '.cybawv-include-children, .cybawv-include-descendants', function() {
             var $this = $(this);
-            var $rule = $this.closest('.wvd-rule');
+            var $rule = $this.closest('.cybawv-rule');
 
             // If descendants is checked, also check children
-            if ($this.hasClass('wvd-include-descendants') && $this.is(':checked')) {
-                $rule.find('.wvd-include-children').prop('checked', true);
+            if ($this.hasClass('cybawv-include-descendants') && $this.is(':checked')) {
+                $rule.find('.cybawv-include-children').prop('checked', true);
             }
 
             // If children is unchecked, also uncheck descendants
-            if ($this.hasClass('wvd-include-children') && !$this.is(':checked')) {
-                $rule.find('.wvd-include-descendants').prop('checked', false);
+            if ($this.hasClass('cybawv-include-children') && !$this.is(':checked')) {
+                $rule.find('.cybawv-include-descendants').prop('checked', false);
             }
 
             updateData($content, $dataInput);
         });
 
         // Match all change
-        $content.on('change.wvd', '.wvd-match-all-checkbox', function() {
+        $content.on('change.cybawv', '.cybawv-match-all-checkbox', function() {
             updateData($content, $dataInput);
         });
 
         // Add rule
-        $content.on('click.wvd', '.wvd-add-rule', function() {
-            var $rules = $content.find('.wvd-rules');
-            var index = $rules.find('.wvd-rule').length;
+        $content.on('click.cybawv', '.cybawv-add-rule', function() {
+            var $rules = $content.find('.cybawv-rules');
+            var index = $rules.find('.cybawv-rule').length;
             $rules.append(renderRule(getDefaultRule('page'), index));
             updateData($content, $dataInput);
         });
 
         // Remove rule
-        $content.on('click.wvd', '.wvd-rule-remove', function() {
-            $(this).closest('.wvd-rule').remove();
+        $content.on('click.cybawv', '.cybawv-rule-remove', function() {
+            $(this).closest('.cybawv-rule').remove();
             updateData($content, $dataInput);
         });
 
         // Delete all rules
-        $content.on('click.wvd', '.wvd-delete-rules', function() {
-            $content.find('.wvd-rules').empty();
+        $content.on('click.cybawv', '.cybawv-delete-rules', function() {
+            $content.find('.cybawv-rules').empty();
             updateData($content, $dataInput);
             updateStatus($wrapper, false);
         });
 
         // Done button
-        $content.on('click.wvd', '.wvd-done-button', function(e) {
+        $content.on('click.cybawv', '.cybawv-done-button', function(e) {
             e.preventDefault();
             $panel.slideUp(200);
             var data = getVisibilityData($dataInput);
@@ -408,26 +408,26 @@
      */
     function updateData($content, $dataInput) {
         var data = {
-            action: $content.find('.wvd-action-select').val() || 'show',
-            match_all: $content.find('.wvd-match-all-checkbox').is(':checked'),
+            action: $content.find('.cybawv-action-select').val() || 'show',
+            match_all: $content.find('.cybawv-match-all-checkbox').is(':checked'),
             rules: []
         };
 
-        $content.find('.wvd-rule').each(function() {
+        $content.find('.cybawv-rule').each(function() {
             var $rule = $(this);
-            var type = $rule.find('.wvd-rule-type').val();
+            var type = $rule.find('.cybawv-rule-type').val();
             var rule = {
                 type: type,
                 value: '',
-                include_children: $rule.find('.wvd-include-children').is(':checked'),
-                include_descendants: $rule.find('.wvd-include-descendants').is(':checked')
+                include_children: $rule.find('.cybawv-include-children').is(':checked'),
+                include_descendants: $rule.find('.cybawv-include-descendants').is(':checked')
             };
 
             if (type === 'taxonomy') {
-                rule.taxonomy = $rule.find('.wvd-rule-taxonomy').val() || '';
-                rule.value = $rule.find('.wvd-rule-value').val() || '';
+                rule.taxonomy = $rule.find('.cybawv-rule-taxonomy').val() || '';
+                rule.value = $rule.find('.cybawv-rule-value').val() || '';
             } else if (type === 'user_role') {
-                var roleValues = $rule.find('.wvd-rule-values').val();
+                var roleValues = $rule.find('.cybawv-rule-values').val();
                 roleValues = Array.isArray(roleValues) ? roleValues : [];
                 rule.values = roleValues.filter(function(roleValue) {
                     return roleValue !== '';
@@ -435,8 +435,8 @@
                 rule.value = '';
                 rule.include_children = false;
                 rule.include_descendants = false;
-            } else if ($rule.find('.wvd-rule-value').length) {
-                rule.value = $rule.find('.wvd-rule-value').val() || '';
+            } else if ($rule.find('.cybawv-rule-value').length) {
+                rule.value = $rule.find('.cybawv-rule-value').val() || '';
             }
 
             data.rules.push(rule);
@@ -569,14 +569,14 @@
      * Update status indicator
      */
     function updateStatus($wrapper, hasRules) {
-        var $status = $wrapper.find('.wvd-visibility-status');
+        var $status = $wrapper.find('.cybawv-visibility-status');
         if (hasRules) {
             if ($status.length === 0) {
-                $wrapper.find('.wvd-visibility-toggle').append(
-                    '<span class="wvd-visibility-status wvd-has-rules">' + escapeHtml(wvdData.i18n.configured) + '</span>'
+                $wrapper.find('.cybawv-visibility-toggle').append(
+                    '<span class="cybawv-visibility-status cybawv-has-rules">' + escapeHtml(cybawvData.i18n.configured) + '</span>'
                 );
             } else {
-                $status.addClass('wvd-has-rules').text(wvdData.i18n.configured);
+                $status.addClass('cybawv-has-rules').text(cybawvData.i18n.configured);
             }
         } else {
             $status.remove();

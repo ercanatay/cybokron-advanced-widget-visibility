@@ -11,14 +11,14 @@
  * Plugin Name:       Cybokron Advanced Widget Visibility
  * Plugin URI:        https://github.com/ercanatay/cybokron-advanced-widget-visibility
  * Description:       Control widget visibility based on pages, posts, categories with full descendant (grandchildren) support. A Jetpack-free alternative that includes ALL levels of nested pages.
- * Version:           1.7.0
+ * Version:           1.8.0
  * Requires at least: 5.2
  * Requires PHP:      7.4
  * Author:            Ercan ATAY
  * Author URI:        https://www.ercanatay.com/en/
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       widget-visibility-with-descendants
+ * Text Domain:       cybokron-advanced-widget-visibility
  * Domain Path:       /languages
  */
 
@@ -28,22 +28,22 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-define('WVD_VERSION', '1.7.0');
-define('WVD_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('WVD_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('WVD_PLUGIN_BASENAME', plugin_basename(__FILE__));
+define('CYBAWV_VERSION', '1.8.0');
+define('CYBAWV_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('CYBAWV_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('CYBAWV_PLUGIN_BASENAME', plugin_basename(__FILE__));
 
 /**
  * Main Plugin Class
  *
  * @since 1.0.0
  */
-final class Widget_Visibility_Descendants {
+final class Cybawv_Plugin {
 
     /**
      * Single instance of the class
      *
-     * @var Widget_Visibility_Descendants
+     * @var Cybawv_Plugin
      */
     private static $instance = null;
 
@@ -51,7 +51,7 @@ final class Widget_Visibility_Descendants {
      * Get single instance of the class
      *
      * @since 1.0.0
-     * @return Widget_Visibility_Descendants
+     * @return Cybawv_Plugin
      */
     public static function get_instance() {
         if (null === self::$instance) {
@@ -76,9 +76,9 @@ final class Widget_Visibility_Descendants {
      * @since 1.0.0
      */
     private function load_dependencies() {
-        require_once WVD_PLUGIN_DIR . 'includes/class-visibility-admin.php';
-        require_once WVD_PLUGIN_DIR . 'includes/class-visibility-frontend.php';
-        require_once WVD_PLUGIN_DIR . 'includes/class-admin-page.php';
+        require_once CYBAWV_PLUGIN_DIR . 'includes/class-visibility-admin.php';
+        require_once CYBAWV_PLUGIN_DIR . 'includes/class-visibility-frontend.php';
+        require_once CYBAWV_PLUGIN_DIR . 'includes/class-admin-page.php';
     }
 
     /**
@@ -88,14 +88,14 @@ final class Widget_Visibility_Descendants {
      */
     private function init_hooks() {
         // Initialize data handling hooks (must also run for REST widget updates).
-        new WVD_Visibility_Admin();
+        new Cybawv_Visibility_Admin();
 
         // Initialize frontend
-        new WVD_Visibility_Frontend();
+        new Cybawv_Visibility_Frontend();
 
         // Initialize admin settings page
         if (is_admin()) {
-            new WVD_Admin_Page();
+            new Cybawv_Admin_Page();
         }
     }
 }
@@ -104,14 +104,14 @@ final class Widget_Visibility_Descendants {
  * Initialize plugin
  *
  * @since 1.0.0
- * @return Widget_Visibility_Descendants
+ * @return Cybawv_Plugin
  */
-function wvd_init() {
-    return Widget_Visibility_Descendants::get_instance();
+function cybawv_init() {
+    return Cybawv_Plugin::get_instance();
 }
 
 // Start the plugin
-add_action('plugins_loaded', 'wvd_init');
+add_action('plugins_loaded', 'cybawv_init');
 
 /**
  * Activation hook

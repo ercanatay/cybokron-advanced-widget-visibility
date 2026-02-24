@@ -3,7 +3,7 @@ Contributors: cybokron
 Tags: widget, visibility, descendants, grandchildren, pages
 Requires at least: 5.2
 Tested up to: 6.9
-Stable tag: 1.7.0
+Stable tag: 1.8.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -68,6 +68,17 @@ This plugin works with classic widgets. For block-based widget areas, the visibi
 
 == Changelog ==
 
+= 1.8.0 =
+* Compliance: Text domain aligned to plugin slug `cybokron-advanced-widget-visibility`.
+* Compliance: Renamed main plugin file to `cybokron-advanced-widget-visibility.php`.
+* Compliance: Renamed all function/class/constant prefixes from `wvd` (3 chars) to `cybawv` (6 chars).
+* Compliance: Renamed all CSS class prefixes from `wvd-` to `cybawv-`.
+* Compliance: Renamed JavaScript global from `wvdData` to `cybawvData`.
+* Compliance: Renamed option keys from `wvd_settings` to `cybawv_settings`.
+* Compliance: Renamed widget data key from `wvd_visibility` to `cybawv_visibility`.
+* Compliance: Updated translation file names to match new text domain.
+* Changed: Main plugin class renamed from `Widget_Visibility_Descendants` to `Cybawv_Plugin`.
+
 = 1.7.0 =
 * Feature: Added dedicated settings page with dashicons-visibility sidebar icon.
 * Feature: Global bypass toggle to temporarily disable all visibility rules for debugging.
@@ -107,7 +118,7 @@ This plugin works with classic widgets. For block-based widget areas, the visibi
 
 = 1.4.7 =
 * Security: Restricted widget visibility UI rendering to users with `edit_theme_options`.
-* Security: Prevented visibility data loss by restoring previous `wvd_visibility` settings when unauthorized users trigger widget updates.
+* Security: Prevented visibility data loss by restoring previous visibility settings when unauthorized users trigger widget updates.
 
 = 1.4.6 =
 * Docs: Reviewed recent merged PRs and synchronized release notes for maintainers.
@@ -155,17 +166,11 @@ This plugin works with classic widgets. For block-based widget areas, the visibi
 
 == Upgrade Notice ==
 
+= 1.8.0 =
+WordPress.org compliance: text domain, file name, and all prefixes aligned to plugin slug. Fresh install recommended.
+
 = 1.7.0 =
 New settings page with global bypass, configurable rule limits, and uninstall data cleanup option.
 
-= 1.6.1 =
-Added admin menu page with custom sidebar icon.
-
 = 1.6.0 =
 Plugin rebranded to "Cybokron Advanced Widget Visibility". No functional changes.
-
-= 1.5.1 =
-Text domain and plugin file aligned to WordPress.org assigned slug.
-
-= 1.5.0 =
-WordPress.org submission release with aligned plugin slug, text domain, and distribution packaging.
