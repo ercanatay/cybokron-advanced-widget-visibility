@@ -4,13 +4,6 @@ on:
   release:
     types: [published]
 
-# ============================================================
-# DEPLOY TOGGLE: Set to true to enable WordPress.org deployment.
-# Set to false to run validation only (dry run).
-# ============================================================
-env:
-  DEPLOY_ENABLED: 'false'
-
 jobs:
   validate:
     name: Pre-deploy checks
@@ -166,7 +159,6 @@ jobs:
     name: Deploy to WordPress.org SVN
     needs: validate
     runs-on: ubuntu-latest
-    if: ${{ vars.DEPLOY_ENABLED == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
