@@ -11,7 +11,7 @@
  * Plugin Name:       Cybokron Advanced Widget Visibility
  * Plugin URI:        https://github.com/ercanatay/cybokron-advanced-widget-visibility
  * Description:       Control widget visibility based on pages, posts, categories with full descendant (grandchildren) support. A Jetpack-free alternative that includes ALL levels of nested pages.
- * Version:           1.8.0
+ * Version:           1.9.0
  * Requires at least: 5.2
  * Requires PHP:      7.4
  * Author:            Ercan ATAY
@@ -28,7 +28,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-define('CYBAWV_VERSION', '1.8.0');
+define('CYBAWV_VERSION', '1.9.0');
 define('CYBAWV_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CYBAWV_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('CYBAWV_PLUGIN_BASENAME', plugin_basename(__FILE__));

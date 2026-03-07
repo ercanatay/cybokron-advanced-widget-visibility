@@ -4,7 +4,7 @@
 **Tags:** widget, visibility, descendants, grandchildren, pages
 **Requires at least:** 5.2
 **Tested up to:** 6.9
-**Stable tag:** 1.8.0
+**Stable tag:** 1.9.0
 **Requires PHP:** 7.4
 **License:** GPLv2 or later
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
@@ -148,6 +148,11 @@ No. The visibility checks are very lightweight and only run when widgets are bei
 This plugin works with classic widgets. For block-based widget areas, the visibility controls appear in the widget settings.
 
 ## Changelog
+
+### 1.9.0 (2026-03-07)
+- Fix: Updated GitHub Actions workflow to reference correct plugin file name and constants after 1.8.0 rebrand.
+- Fix: Corrected plugin slug in deploy workflow (`widget-visibility-with-descendants` → `cybokron-advanced-widget-visibility`).
+- Fix: Version consistency check now reads `CYBAWV_VERSION` constant instead of old `WVD_VERSION`.
 
 ### 1.8.0 (2026-02-24)
 - Compliance: Text domain aligned to plugin slug `cybokron-advanced-widget-visibility`.
