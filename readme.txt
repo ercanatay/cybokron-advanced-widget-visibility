@@ -3,7 +3,7 @@ Contributors: cybokron
 Tags: widget, visibility, descendants, grandchildren, pages
 Requires at least: 5.2
 Tested up to: 6.9
-Stable tag: 1.9.0
+Stable tag: 1.9.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -67,6 +67,9 @@ This plugin works with classic widgets. For block-based widget areas, the visibi
 3. Page hierarchy with descendant matching
 
 == Changelog ==
+
+= 1.9.1 =
+* Changed: Plugin and author website links now point to https://cybokron.com. No functional changes.
 
 = 1.9.0 =
 * Fix: Updated GitHub Actions workflow to reference correct plugin file name and constants after 1.8.0 rebrand.
@@ -170,6 +173,9 @@ This plugin works with classic widgets. For block-based widget areas, the visibi
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.9.1 =
+Maintenance release: website links updated, no functional changes.
 
 = 1.9.0 =
 Maintenance release: fixes GitHub Actions deploy workflow references after the 1.8.0 rebrand.
