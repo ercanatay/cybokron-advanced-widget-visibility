@@ -325,7 +325,7 @@ This project is licensed under the GPL v2 or later - see the [LICENSE](LICENSE) 
 ## Author
 
 **Ercan ATAY**
-- Website: [ercanatay.com](https://www.ercanatay.com/en/)
+- Website: [cybokron.com](https://cybokron.com)
 - GitHub: [@ercanatay](https://github.com/ercanatay)
 
 ## Support

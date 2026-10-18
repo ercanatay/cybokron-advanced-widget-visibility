@@ -15,7 +15,7 @@
  * Requires at least: 5.2
  * Requires PHP:      7.4
  * Author:            Ercan ATAY
- * Author URI:        https://www.ercanatay.com/en/
+ * Author URI:        https://cybokron.com
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       cybokron-advanced-widget-visibility
